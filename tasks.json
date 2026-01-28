@@ -1,14 +1,11 @@
 {
-  "tasks": [
-    {
-      "id": 1769617374458,
-      "text": "PPT",
-      "owner": "Parthiv ",
-      "date": "2026-01-29",
-      "status": "Done"
-    }
-  ],
+  "tasks": [],
   "logs": [
+    {
+      "time": "2026-01-28T16:39:59.883Z",
+      "user": "Team Member",
+      "action": "Deleted item from tasks"
+    },
     {
       "time": "2026-01-28T16:31:28.830Z",
       "user": "Parthiv ",
