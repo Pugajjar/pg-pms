@@ -5,10 +5,15 @@
       "text": "PPT",
       "owner": "Parthiv ",
       "date": "2026-01-29",
-      "status": "To-Do"
+      "status": "Done"
     }
   ],
   "logs": [
+    {
+      "time": "2026-01-28T16:31:15.250Z",
+      "user": "Parthiv ",
+      "action": "Updated status of \"PPT\" to Done"
+    },
     {
       "time": "2026-01-28T16:24:30.835Z",
       "user": "Parthiv ",
