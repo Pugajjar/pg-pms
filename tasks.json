@@ -12,7 +12,7 @@
       "text": "Research Analysis -2",
       "owner": "YUG",
       "date": "2026-01-30",
-      "status": "To-Do"
+      "status": "Done"
     },
     {
       "id": 1769619064153,
@@ -30,6 +30,11 @@
     }
   ],
   "logs": [
+    {
+      "time": "2026-01-28T16:52:26.115Z",
+      "user": "SUJAL",
+      "action": "Moved \"Research Analysis -2\" to Done"
+    },
     {
       "time": "2026-01-28T16:52:20.009Z",
       "user": "SUJAL",
