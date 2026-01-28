@@ -8,146 +8,234 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        body { font-family: 'Poppins', sans-serif; color: #333333; background-color: #ffffff; }
+        body { 
+            font-family: 'Poppins', sans-serif; 
+            color: #333333; 
+            background-color: #ffffff; 
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Capsule Button Styling */
         .capsule-btn {
             border: 1px solid #e5e7eb;
             border-radius: 9999px;
             padding: 8px 24px;
-            transition: all 0.2s ease;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
             display: inline-flex;
             align-items: center;
             gap: 8px;
             background: #ffffff;
+            cursor: pointer;
+            outline: 2px solid transparent;
+            outline-offset: 2px;
         }
+
+        /* Hover Effect: Black Outline */
         .capsule-btn:hover {
-            background: #f9fafb;
-            border-color: #d1d5db;
+            border-color: #000000;
+            outline: 2px solid #000000;
+            outline-offset: -2px; /* Pulls the outline inside for a clean look */
             transform: translateY(-1px);
         }
-        .status-pill {
-            padding: 4px 12px;
-            border-radius: 9999px;
-            font-size: 0.75rem;
-            font-weight: 500;
+
+        .capsule-btn-dark {
+            background: #000000;
+            color: #ffffff;
+            border: 1px solid #000000;
         }
-        .overdue { color: #ef4444 !important; font-weight: 600; }
-        input, select {
+
+        .capsule-btn-dark:hover {
+            background: #1a1a1a;
+            outline: 2px solid #000000;
+            outline-offset: 2px; /* Outer outline for dark buttons */
+        }
+
+        /* UI Elements */
+        .status-select {
+            appearance: none;
+            background: #f9fafb;
+            border: 1px solid #f3f4f6;
+            border-radius: 9999px;
+            padding: 4px 12px;
+            font-size: 10px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .status-select:hover { border-color: #000; }
+
+        input, select, textarea {
             border: 1px solid #e5e7eb;
             border-radius: 12px;
             padding: 10px 16px;
             outline: none;
-            transition: border-color 0.2s;
-        }
-        input:focus { border-color: #333333; }
-        .sidebar-item {
-            cursor: pointer;
-            padding: 10px 16px;
-            border-radius: 12px;
             transition: all 0.2s;
         }
-        .sidebar-item:hover { background: #f3f4f6; }
-        .sidebar-item.active { background: #333333; color: #ffffff; }
+        input:focus { border-color: #000000; }
+
+        .sidebar-item {
+            cursor: pointer;
+            padding: 12px 16px;
+            border-radius: 14px;
+            transition: all 0.2s;
+            font-size: 14px;
+            font-weight: 500;
+            color: #6b7280;
+        }
+        .sidebar-item:hover { 
+            background: #f9fafb; 
+            color: #000;
+        }
+        .sidebar-item.active { 
+            background: #000000; 
+            color: #ffffff; 
+        }
+
+        .task-card {
+            border: 1px solid #f3f4f6;
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+        .task-card:hover {
+            border-color: #e5e7eb;
+            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.05);
+        }
+
+        .overdue { color: #ef4444 !important; font-weight: 600; }
         
-        /* Hide scrollbars but allow scrolling */
         .no-scrollbar::-webkit-scrollbar { display: none; }
     </style>
 </head>
-<body class="bg-white">
+<body>
 
-    <!-- LOGIN SECTION -->
+    <!-- LOGIN SCREEN -->
     <div id="login-screen" class="fixed inset-0 z-[100] bg-white flex items-center justify-center p-6">
         <div class="max-w-sm w-full text-center">
-            <img src="logo.png" alt="PG-PMS Logo" class="h-20 mx-auto mb-8" onerror="this.src='https://ui-avatars.com/api/?name=PG+PMS&background=333&color=fff'">
-            <h1 class="text-2xl font-semibold mb-2">Welcome to PG-PMS</h1>
-            <p class="text-gray-400 mb-8 text-sm">Enter your workspace passcode to continue.</p>
-            <div class="space-y-4">
-                <input type="password" id="passcode" placeholder="GitHub Token (ghp_...)" class="w-full text-center">
-                <button onclick="login()" class="w-full capsule-btn justify-center bg-black text-white border-none py-3">Enter Workspace</button>
+            <!-- LOGO INSERTION -->
+            <div class="mb-10">
+                <img src="logo.png" alt="PG-PMS Logo" class="h-16 mx-auto object-contain" onerror="this.src='https://ui-avatars.com/api/?name=PG+PMS&background=000&color=fff&size=128'">
             </div>
+            
+            <h1 class="text-2xl font-bold mb-2 tracking-tight">Project Management</h1>
+            <p class="text-gray-400 mb-8 text-sm font-light">Access your workspace with your passcode.</p>
+            
+            <div class="space-y-4">
+                <input type="password" id="passcode" placeholder="Enter Token (ghp_...)" class="w-full text-center">
+                <button onclick="login()" class="w-full capsule-btn capsule-btn-dark justify-center py-3">Enter Workspace</button>
+            </div>
+            <p class="mt-8 text-[10px] text-gray-300 uppercase tracking-widest">Reliable • Serverless • Secure</p>
         </div>
     </div>
 
-    <!-- MAIN DASHBOARD -->
+    <!-- DASHBOARD -->
     <div id="main-dashboard" class="hidden min-h-screen flex flex-col md:flex-row">
         
         <!-- SIDE NAVIGATION -->
-        <aside class="w-full md:w-64 border-r border-gray-100 p-6 flex flex-col gap-8 bg-white">
-            <div class="flex items-center gap-3">
-                <img src="logo.png" alt="Logo" class="h-8" onerror="this.style.display='none'">
-                <span class="font-bold text-xl tracking-tight">PG-PMS</span>
+        <aside class="w-full md:w-72 border-r border-gray-100 p-8 flex flex-col gap-10 bg-white">
+            <!-- DASHBOARD LOGO (TOP LEFT) -->
+            <div class="flex items-center gap-4">
+                <img src="logo.png" alt="Logo" class="h-10 w-10 object-contain" onerror="this.src='https://ui-avatars.com/api/?name=PG&background=000&color=fff'">
+                <div class="flex flex-col">
+                    <span class="font-bold text-lg leading-none tracking-tight">PG-PMS</span>
+                    <span class="text-[10px] text-gray-400 font-medium uppercase tracking-tighter">Workspace</span>
+                </div>
             </div>
 
-            <nav class="flex flex-col gap-2 flex-1">
-                <div onclick="switchTab('tasks')" id="nav-tasks" class="sidebar-item active"><i class="fas fa-tasks mr-2"></i> Tasks</div>
-                <div onclick="switchTab('workspace')" id="nav-workspace" class="sidebar-item"><i class="fas fa-folder-open mr-2"></i> Documents</div>
-                <div onclick="switchTab('logs')" id="nav-logs" class="sidebar-item"><i class="fas fa-history mr-2"></i> Activity Log</div>
+            <nav class="flex flex-col gap-1.5 flex-1">
+                <div onclick="switchTab('tasks')" id="nav-tasks" class="sidebar-item active">
+                    <i class="fas fa-th-large mr-3 text-xs"></i> Dashboard
+                </div>
+                <div onclick="switchTab('workspace')" id="nav-workspace" class="sidebar-item">
+                    <i class="fas fa-file-invoice mr-3 text-xs"></i> Documentation
+                </div>
+                <div onclick="switchTab('logs')" id="nav-logs" class="sidebar-item">
+                    <i class="fas fa-stream mr-3 text-xs"></i> Audit Log
+                </div>
             </nav>
 
-            <div class="pt-6 border-t border-gray-50">
-                <p class="text-[10px] uppercase text-gray-400 font-bold mb-4 tracking-widest">Global Progress</p>
-                <div class="w-full bg-gray-100 h-1.5 rounded-full overflow-hidden">
-                    <div id="global-progress-bar" class="bg-black h-full transition-all duration-700" style="width: 0%"></div>
+            <div class="space-y-4">
+                <div class="pt-6 border-t border-gray-50">
+                    <div class="flex justify-between items-center mb-2">
+                        <p class="text-[10px] uppercase text-gray-400 font-bold tracking-widest">Progress</p>
+                        <span class="text-[10px] font-bold text-black"><span id="global-percent">0</span>%</span>
+                    </div>
+                    <div class="w-full bg-gray-50 h-1.5 rounded-full overflow-hidden">
+                        <div id="global-progress-bar" class="bg-black h-full transition-all duration-1000" style="width: 0%"></div>
+                    </div>
                 </div>
-                <p class="text-xs mt-2 text-gray-500 font-medium"><span id="global-percent">0</span>% Completed</p>
+                <button onclick="logout()" class="w-full capsule-btn text-xs text-red-500 border-red-50 hover:bg-red-50 justify-center">Sign Out</button>
             </div>
-
-            <button onclick="logout()" class="capsule-btn text-red-500 text-xs mt-4 border-red-100 hover:bg-red-50">Logout</button>
         </aside>
 
-        <!-- CONTENT AREA -->
-        <main class="flex-1 p-6 md:p-10 overflow-y-auto no-scrollbar">
+        <!-- CONTENT -->
+        <main class="flex-1 p-6 md:p-12 overflow-y-auto no-scrollbar">
             
-            <!-- HEADER -->
-            <div class="flex justify-between items-end mb-10">
+            <!-- TOP BAR -->
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
                 <div>
-                    <h2 id="tab-title" class="text-3xl font-semibold">Project Tasks</h2>
-                    <p id="tab-desc" class="text-gray-400 text-sm mt-1">Manage and track team responsibilities.</p>
+                    <h2 id="tab-title" class="text-3xl font-bold tracking-tight">Project Tasks</h2>
+                    <p id="tab-desc" class="text-gray-400 text-sm mt-1 font-light">Efficiently track and manage team responsibilities.</p>
                 </div>
-                <div class="flex gap-2">
-                    <button onclick="sync()" class="capsule-btn text-xs"><i class="fas fa-sync" id="sync-icon"></i> Refresh</button>
-                    <button id="add-btn" onclick="openModal()" class="capsule-btn bg-black text-white border-none text-xs">New Item</button>
-                </div>
-            </div>
-
-            <!-- TASKS TAB -->
-            <div id="tab-content-tasks" class="space-y-6">
-                <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
-                    <div class="space-y-4">
-                        <h4 class="text-xs font-bold uppercase tracking-widest text-gray-400">To Do</h4>
-                        <div id="col-todo" class="space-y-4"></div>
-                    </div>
-                    <div class="space-y-4">
-                        <h4 class="text-xs font-bold uppercase tracking-widest text-gray-400">In Progress</h4>
-                        <div id="col-progress" class="space-y-4"></div>
-                    </div>
-                    <div class="space-y-4">
-                        <h4 class="text-xs font-bold uppercase tracking-widest text-gray-400">Review</h4>
-                        <div id="col-review" class="space-y-4"></div>
-                    </div>
-                    <div class="space-y-4">
-                        <h4 class="text-xs font-bold uppercase tracking-widest text-gray-400">Done</h4>
-                        <div id="col-done" class="space-y-4"></div>
-                    </div>
+                <div class="flex gap-3">
+                    <button onclick="sync()" class="capsule-btn text-xs font-semibold">
+                        <i class="fas fa-rotate" id="sync-icon"></i> Refresh
+                    </button>
+                    <button id="add-btn" onclick="openModal()" class="capsule-btn capsule-btn-dark text-xs font-semibold">
+                        <i class="fas fa-plus"></i> New Entry
+                    </button>
                 </div>
             </div>
 
-            <!-- WORKSPACE TAB -->
-            <div id="tab-content-workspace" class="hidden">
+            <!-- TASK KANBAN VIEW -->
+            <div id="tab-content-tasks" class="animate-in fade-in duration-500">
+                <div class="grid grid-cols-1 xl:grid-cols-4 gap-8">
+                    <!-- Columns -->
+                    <div class="space-y-6">
+                        <h4 class="text-[11px] font-bold uppercase tracking-[0.2em] text-gray-300 flex items-center">
+                            <span class="w-2 h-2 rounded-full bg-gray-200 mr-2"></span> To Do
+                        </h4>
+                        <div id="col-todo" class="space-y-4 min-h-[100px]"></div>
+                    </div>
+                    <div class="space-y-6">
+                        <h4 class="text-[11px] font-bold uppercase tracking-[0.2em] text-blue-400 flex items-center">
+                            <span class="w-2 h-2 rounded-full bg-blue-400 mr-2"></span> In Progress
+                        </h4>
+                        <div id="col-progress" class="space-y-4 min-h-[100px]"></div>
+                    </div>
+                    <div class="space-y-6">
+                        <h4 class="text-[11px] font-bold uppercase tracking-[0.2em] text-orange-400 flex items-center">
+                            <span class="w-2 h-2 rounded-full bg-orange-400 mr-2"></span> Review
+                        </h4>
+                        <div id="col-review" class="space-y-4 min-h-[100px]"></div>
+                    </div>
+                    <div class="space-y-6">
+                        <h4 class="text-[11px] font-bold uppercase tracking-[0.2em] text-green-500 flex items-center">
+                            <span class="w-2 h-2 rounded-full bg-green-500 mr-2"></span> Completed
+                        </h4>
+                        <div id="col-done" class="space-y-4 min-h-[100px]"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DOCUMENTS VIEW -->
+            <div id="tab-content-workspace" class="hidden animate-in fade-in duration-500">
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6" id="doc-container"></div>
             </div>
 
-            <!-- LOGS TAB -->
-            <div id="tab-content-logs" class="hidden">
-                <div class="bg-white border border-gray-100 rounded-2xl overflow-hidden">
+            <!-- AUDIT LOG VIEW -->
+            <div id="tab-content-logs" class="hidden animate-in fade-in duration-500">
+                <div class="bg-white border border-gray-100 rounded-[24px] overflow-hidden">
                     <table class="w-full text-left text-sm">
-                        <thead class="bg-gray-50 text-gray-500 font-medium">
+                        <thead class="bg-gray-50/50 text-gray-400 font-bold uppercase text-[10px] tracking-widest">
                             <tr>
-                                <th class="p-4">Time</th>
-                                <th class="p-4">Member</th>
-                                <th class="p-4">Action</th>
+                                <th class="p-6">Timestamp</th>
+                                <th class="p-6">Team Member</th>
+                                <th class="p-6">Activity</th>
                             </tr>
                         </thead>
-                        <tbody id="log-table-body"></tbody>
+                        <tbody id="log-table-body" class="divide-y divide-gray-50"></tbody>
                     </table>
                 </div>
             </div>
@@ -155,37 +243,47 @@
         </main>
     </div>
 
-    <!-- MODAL (FOR ADDING TASKS/DOCS) -->
-    <div id="modal" class="fixed inset-0 z-[150] bg-black/20 backdrop-blur-sm hidden flex items-center justify-center p-4">
-        <div class="bg-white w-full max-w-md rounded-3xl p-8 shadow-2xl">
-            <h3 id="modal-title" class="text-xl font-bold mb-6">Add New Task</h3>
-            <div id="task-fields" class="space-y-4">
-                <input type="text" id="m-task-text" placeholder="Task description..." class="w-full">
+    <!-- MODAL -->
+    <div id="modal" class="fixed inset-0 z-[150] bg-black/10 backdrop-blur-md hidden flex items-center justify-center p-4">
+        <div class="bg-white w-full max-w-md rounded-[32px] p-10 shadow-2xl border border-gray-100">
+            <h3 id="modal-title" class="text-xl font-bold mb-8">Add New Task</h3>
+            
+            <div id="task-fields" class="space-y-5">
+                <div class="space-y-1">
+                    <label class="text-[10px] font-bold uppercase text-gray-400 ml-1">Task Details</label>
+                    <input type="text" id="m-task-text" placeholder="What needs to be done?" class="w-full bg-gray-50 border-transparent focus:bg-white">
+                </div>
                 <div class="grid grid-cols-2 gap-4">
-                    <input type="text" id="m-task-owner" placeholder="Owner Name" class="w-full">
-                    <input type="date" id="m-task-date" class="w-full">
+                    <div class="space-y-1">
+                        <label class="text-[10px] font-bold uppercase text-gray-400 ml-1">Assignee</label>
+                        <input type="text" id="m-task-owner" placeholder="Name" class="w-full bg-gray-50 border-transparent focus:bg-white">
+                    </div>
+                    <div class="space-y-1">
+                        <label class="text-[10px] font-bold uppercase text-gray-400 ml-1">Deadline</label>
+                        <input type="date" id="m-task-date" class="w-full bg-gray-50 border-transparent focus:bg-white">
+                    </div>
                 </div>
             </div>
-            <div id="doc-fields" class="space-y-4 hidden">
-                <input type="text" id="m-doc-name" placeholder="Document Name..." class="w-full">
-                <input type="url" id="m-doc-url" placeholder="URL (Google Drive, Github, etc)" class="w-full">
+
+            <div id="doc-fields" class="space-y-5 hidden">
+                <input type="text" id="m-doc-name" placeholder="Document Name (e.g., UI Design PPT)" class="w-full bg-gray-50 border-transparent">
+                <input type="url" id="m-doc-url" placeholder="https://link-to-resource.com" class="w-full bg-gray-50 border-transparent">
             </div>
-            <div class="flex gap-3 mt-8">
-                <button onclick="closeModal()" class="flex-1 capsule-btn justify-center">Cancel</button>
-                <button onclick="submitModal()" class="flex-1 capsule-btn bg-black text-white border-none justify-center">Save Item</button>
+
+            <div class="flex gap-3 mt-10">
+                <button onclick="closeModal()" class="flex-1 capsule-btn justify-center font-medium">Cancel</button>
+                <button onclick="submitModal()" class="flex-1 capsule-btn capsule-btn-dark justify-center font-medium">Save Item</button>
             </div>
         </div>
     </div>
 
     <script>
-        // CONFIG
-        const REPO_OWNER = "Pugajjar"; // <-- CHANGE THIS
+        // CONFIG - REPLACE OWNER
+        const REPO_OWNER = "Pugajjar"; 
         const REPO_NAME = "pg-pms";
         const FILE_PATH = "tasks.json";
 
         let state = { tasks: [], logs: [], docs: [], sha: null, token: null, currentTab: 'tasks' };
-
-        // --- AUTH & SYNC ---
 
         async function login() {
             const token = document.getElementById('passcode').value;
@@ -195,7 +293,7 @@
             if(success) {
                 document.getElementById('login-screen').classList.add('hidden');
                 document.getElementById('main-dashboard').classList.remove('hidden');
-                localStorage.setItem('pg_pms_key', token);
+                localStorage.setItem('pg_pms_v2_key', token);
             }
         }
 
@@ -209,33 +307,26 @@
                 if(!res.ok) throw new Error();
                 const data = await res.json();
                 state.sha = data.sha;
-                const content = JSON.parse(atob(data.content));
+                const content = JSON.parse(decodeURIComponent(escape(atob(data.content))));
                 
-                // Compatibility for old versions
-                if(Array.isArray(content)) {
-                    state.tasks = content;
-                    state.logs = [];
-                    state.docs = [];
-                } else {
-                    state.tasks = content.tasks || [];
-                    state.logs = content.logs || [];
-                    state.docs = content.docs || [];
-                }
+                state.tasks = content.tasks || [];
+                state.logs = content.logs || [];
+                state.docs = content.docs || [];
 
                 render();
                 return true;
             } catch (e) {
-                alert("Connection failed. Check repo owner name and token permissions.");
+                alert("Connection failed. Check your GitHub Token and Username.");
                 return false;
             } finally { icon.classList.remove('fa-spin'); }
         }
 
         async function commit(message) {
-            const content = btoa(JSON.stringify({
+            const content = btoa(unescape(encodeURIComponent(JSON.stringify({
                 tasks: state.tasks,
                 logs: state.logs,
                 docs: state.docs
-            }, null, 2));
+            }, null, 2))));
 
             const res = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${FILE_PATH}`, {
                 method: "PUT",
@@ -247,15 +338,13 @@
             render();
         }
 
-        // --- CORE FEATURES ---
-
         function addLog(action) {
             state.logs.unshift({
                 time: new Date().toISOString(),
                 user: state.tasks[0]?.owner || "Team Member",
                 action: action
             });
-            if(state.logs.length > 50) state.logs.pop();
+            if(state.logs.length > 30) state.logs.pop();
         }
 
         function switchTab(tab) {
@@ -263,25 +352,23 @@
             document.querySelectorAll('.sidebar-item').forEach(i => i.classList.remove('active'));
             document.getElementById(`nav-${tab}`).classList.add('active');
             
-            document.getElementById('tab-content-tasks').classList.add('hidden');
-            document.getElementById('tab-content-workspace').classList.add('hidden');
-            document.getElementById('tab-content-logs').classList.add('hidden');
+            ['tasks', 'workspace', 'logs'].forEach(t => {
+                document.getElementById(`tab-content-${t}`).classList.add('hidden');
+            });
             document.getElementById(`tab-content-${tab}`).classList.remove('hidden');
 
             const headers = {
-                tasks: { title: "Project Tasks", desc: "Manage and track team responsibilities." },
-                workspace: { title: "Integrated Workspace", desc: "Access shared project documentation and links." },
-                logs: { title: "Activity History", desc: "Detailed audit trail of workspace changes." }
+                tasks: { title: "Project Tasks", desc: "Efficiently track and manage team responsibilities." },
+                workspace: { title: "Documentation", desc: "Central hub for all project assets and links." },
+                logs: { title: "Audit Log", desc: "Historical record of all workspace activities." }
             };
             document.getElementById('tab-title').innerText = headers[tab].title;
             document.getElementById('tab-desc').innerText = headers[tab].desc;
             render();
         }
 
-        // --- RENDERING ---
-
         function render() {
-            // Tasks
+            // Task Kanban
             const cols = { 'To-Do': 'col-todo', 'In Progress': 'col-progress', 'Review': 'col-review', 'Done': 'col-done' };
             Object.values(cols).forEach(id => document.getElementById(id).innerHTML = '');
             
@@ -291,19 +378,19 @@
                 const isOverdue = t.date && new Date(t.date) < new Date() && t.status !== 'Done';
                 
                 const card = `
-                    <div class="bg-white border border-gray-100 p-4 rounded-2xl shadow-sm hover:shadow-md transition-all group">
-                        <div class="flex justify-between items-start mb-3">
-                            <span class="text-xs font-semibold text-gray-400">@${t.owner || 'unassigned'}</span>
+                    <div class="task-card group">
+                        <div class="flex justify-between items-start mb-4">
+                            <span class="text-[10px] font-bold text-gray-300 uppercase tracking-widest">@${t.owner || 'unassigned'}</span>
                             <button onclick="deleteItem('tasks', ${t.id})" class="opacity-0 group-hover:opacity-100 text-gray-300 hover:text-red-500 transition-all">
-                                <i class="fas fa-trash-alt text-xs"></i>
+                                <i class="fas fa-trash-alt text-[10px]"></i>
                             </button>
                         </div>
-                        <h5 class="text-sm font-medium mb-4">${t.text}</h5>
-                        <div class="flex justify-between items-center">
-                            <span class="text-[10px] ${isOverdue ? 'overdue' : 'text-gray-400'}">
-                                <i class="far fa-clock mr-1"></i> ${t.date ? new Date(t.date).toLocaleDateString() : 'No date'}
+                        <h5 class="text-sm font-semibold leading-relaxed mb-6">${t.text}</h5>
+                        <div class="flex justify-between items-center pt-4 border-t border-gray-50">
+                            <span class="text-[9px] font-bold tracking-tight ${isOverdue ? 'overdue' : 'text-gray-400'}">
+                                <i class="far fa-calendar mr-1"></i> ${t.date ? new Date(t.date).toLocaleDateString(undefined, {month:'short', day:'numeric'}) : 'No Date'}
                             </span>
-                            <select onchange="updateStatus(${t.id}, this.value)" class="text-[10px] py-1 px-2 border-gray-100 bg-gray-50">
+                            <select onchange="updateStatus(${t.id}, this.value)" class="status-select">
                                 <option ${t.status === 'To-Do' ? 'selected' : ''}>To-Do</option>
                                 <option ${t.status === 'In Progress' ? 'selected' : ''}>In Progress</option>
                                 <option ${t.status === 'Review' ? 'selected' : ''}>Review</option>
@@ -312,24 +399,27 @@
                         </div>
                     </div>
                 `;
-                document.getElementById(cols[t.status] || 'col-todo').innerHTML += card;
+                const colId = cols[t.status] || 'col-todo';
+                document.getElementById(colId).innerHTML += card;
             });
 
-            // Progress Bar
+            // Sidebar Progress
             const percent = state.tasks.length ? Math.round((completed / state.tasks.length) * 100) : 0;
             document.getElementById('global-progress-bar').style.width = percent + '%';
             document.getElementById('global-percent').innerText = percent;
 
-            // Workspace
+            // Docs
             const docContainer = document.getElementById('doc-container');
-            docContainer.innerHTML = state.docs.length ? '' : '<p class="text-gray-400 text-sm">No documents added yet.</p>';
+            docContainer.innerHTML = state.docs.length ? '' : '<div class="col-span-full py-20 text-center text-gray-300 text-sm">No documents found. Click "New Entry" to add one.</div>';
             state.docs.forEach(d => {
                 docContainer.innerHTML += `
-                    <div class="border border-gray-100 p-6 rounded-3xl hover:bg-gray-50 transition-all relative group">
-                        <i class="fas fa-file-alt text-2xl mb-4 block"></i>
-                        <h4 class="font-semibold mb-2">${d.name}</h4>
-                        <a href="${d.url}" target="_blank" class="text-xs text-blue-500 hover:underline">View Source <i class="fas fa-external-link-alt ml-1"></i></a>
-                        <button onclick="deleteItem('docs', ${d.id})" class="absolute top-4 right-4 opacity-0 group-hover:opacity-100 text-gray-300 hover:text-red-500"><i class="fas fa-times"></i></button>
+                    <div class="task-card flex flex-col items-center text-center group relative">
+                        <div class="w-12 h-12 bg-gray-50 rounded-2xl flex items-center justify-center mb-4 group-hover:bg-black group-hover:text-white transition-all">
+                            <i class="fas fa-file-lines text-lg"></i>
+                        </div>
+                        <h4 class="font-bold text-sm mb-2">${d.name}</h4>
+                        <a href="${d.url}" target="_blank" class="text-[10px] font-bold text-gray-400 hover:text-black uppercase tracking-widest">Open Link <i class="fas fa-arrow-up-right-from-square ml-1"></i></a>
+                        <button onclick="deleteItem('docs', ${d.id})" class="absolute top-4 right-4 opacity-0 group-hover:opacity-100 text-gray-200 hover:text-red-500"><i class="fas fa-times"></i></button>
                     </div>
                 `;
             });
@@ -337,22 +427,20 @@
             // Logs
             const logBody = document.getElementById('log-table-body');
             logBody.innerHTML = '';
-            state.logs.slice(0, 20).forEach(l => {
+            state.logs.forEach(l => {
                 logBody.innerHTML += `
-                    <tr class="border-t border-gray-50">
-                        <td class="p-4 text-gray-400 text-xs">${new Date(l.time).toLocaleTimeString()}</td>
-                        <td class="p-4 font-medium">${l.user}</td>
-                        <td class="p-4 text-gray-500">${l.action}</td>
+                    <tr>
+                        <td class="p-6 text-gray-400 font-mono text-[10px]">${new Date(l.time).toLocaleTimeString()}</td>
+                        <td class="p-6 font-bold text-xs">@${l.user}</td>
+                        <td class="p-6 text-gray-500 text-xs">${l.action}</td>
                     </tr>
                 `;
             });
         }
 
-        // --- MODAL & ACTIONS ---
-
         function openModal() {
             const isDoc = state.currentTab === 'workspace';
-            document.getElementById('modal-title').innerText = isDoc ? "Add Document" : "Add Task";
+            document.getElementById('modal-title').innerText = isDoc ? "New Documentation" : "Create New Task";
             document.getElementById('task-fields').classList.toggle('hidden', isDoc);
             document.getElementById('doc-fields').classList.toggle('hidden', !isDoc);
             document.getElementById('modal').classList.remove('hidden');
@@ -366,7 +454,7 @@
                 const url = document.getElementById('m-doc-url').value;
                 if(!name || !url) return;
                 state.docs.unshift({ id: Date.now(), name, url });
-                addLog(`Linked document: ${name}`);
+                addLog(`Added document: ${name}`);
             } else {
                 const text = document.getElementById('m-task-text').value;
                 const owner = document.getElementById('m-task-owner').value;
@@ -376,27 +464,27 @@
                 addLog(`Created task: ${text}`);
             }
             closeModal();
-            await commit("Updated Workspace");
+            await commit("Workspace Update");
         }
 
         async function updateStatus(id, newStatus) {
             const t = state.tasks.find(x => x.id === id);
             t.status = newStatus;
-            addLog(`Updated status of "${t.text}" to ${newStatus}`);
-            await commit("Update Status");
+            addLog(`Moved "${t.text}" to ${newStatus}`);
+            await commit("Status Change");
         }
 
         async function deleteItem(type, id) {
-            if(!confirm("Are you sure?")) return;
+            if(!confirm("Remove this entry permanently?")) return;
             state[type] = state[type].filter(x => x.id !== id);
-            addLog(`Deleted ${type.slice(0,-1)}`);
-            await commit("Deleted Item");
+            addLog(`Deleted item from ${type}`);
+            await commit("Item Deletion");
         }
 
-        function logout() { localStorage.removeItem('pg_pms_key'); location.reload(); }
+        function logout() { localStorage.removeItem('pg_pms_v2_key'); location.reload(); }
 
         window.onload = () => {
-            const key = localStorage.getItem('pg_pms_key');
+            const key = localStorage.getItem('pg_pms_v2_key');
             if(key) {
                 document.getElementById('passcode').value = key;
                 login();
