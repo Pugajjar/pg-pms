@@ -1,13 +1,6 @@
 {
   "tasks": [
     {
-      "id": 1769617452302,
-      "text": "PPT",
-      "owner": "Samarth",
-      "date": "2026-01-29",
-      "status": "Review"
-    },
-    {
       "id": 1769617374458,
       "text": "PPT",
       "owner": "Parthiv ",
@@ -16,6 +9,11 @@
     }
   ],
   "logs": [
+    {
+      "time": "2026-01-28T16:24:30.835Z",
+      "user": "Parthiv ",
+      "action": "Deleted task"
+    },
     {
       "time": "2026-01-28T16:24:16.253Z",
       "user": "Samarth",
