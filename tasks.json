@@ -1,6 +1,13 @@
 {
   "tasks": [
     {
+      "id": 1769619140009,
+      "text": "PPT UI",
+      "owner": "SUJAL",
+      "date": "2026-01-30",
+      "status": "To-Do"
+    },
+    {
       "id": 1769619075892,
       "text": "Research Analysis -2",
       "owner": "YUG",
@@ -23,6 +30,11 @@
     }
   ],
   "logs": [
+    {
+      "time": "2026-01-28T16:52:20.009Z",
+      "user": "SUJAL",
+      "action": "Created task: PPT UI"
+    },
     {
       "time": "2026-01-28T16:51:21.986Z",
       "user": "YUG",
