@@ -12,7 +12,7 @@
       "text": "Research Analysis",
       "owner": "Samarth",
       "date": "2026-01-30",
-      "status": "To-Do"
+      "status": "In Progress"
     },
     {
       "id": 1769619014532,
@@ -23,6 +23,11 @@
     }
   ],
   "logs": [
+    {
+      "time": "2026-01-28T16:51:21.986Z",
+      "user": "YUG",
+      "action": "Moved \"Research Analysis\" to In Progress"
+    },
     {
       "time": "2026-01-28T16:51:15.892Z",
       "user": "YUG",
