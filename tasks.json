@@ -31,6 +31,11 @@
   ],
   "logs": [
     {
+      "time": "2026-01-29T15:07:13.622Z",
+      "user": "Parthiv Gajjar",
+      "action": "Linked document: My Github Repo"
+    },
+    {
       "time": "2026-01-29T15:06:40.176Z",
       "user": "Parthiv Gajjar",
       "action": "Posted a sticky note"
@@ -171,7 +176,13 @@
       "action": "Created task: PPT"
     }
   ],
-  "docs": [],
+  "docs": [
+    {
+      "id": 1769699233622,
+      "name": "My Github Repo",
+      "url": "https://github.com/Pugajjar"
+    }
+  ],
   "notes": [
     {
       "id": 1769699200176,
