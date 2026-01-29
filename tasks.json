@@ -31,6 +31,11 @@
   ],
   "logs": [
     {
+      "time": "2026-01-29T15:22:06.755Z",
+      "user": "Parthiv Gajjar",
+      "action": "Posted a sticky note"
+    },
+    {
       "time": "2026-01-29T15:21:32.214Z",
       "user": "Parthiv Gajjar",
       "action": "Linked document: My LinkedIn Profile"
@@ -194,6 +199,12 @@
     }
   ],
   "notes": [
+    {
+      "id": 1769700126755,
+      "text": "The UI should be #595959 rather than #494949",
+      "author": "Parthiv Gajjar",
+      "color": "blue"
+    },
     {
       "id": 1769699200176,
       "text": "The PPT Design must be more bright ",
