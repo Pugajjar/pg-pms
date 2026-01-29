@@ -31,6 +31,11 @@
   ],
   "logs": [
     {
+      "time": "2026-01-29T15:36:16.235Z",
+      "user": "Parthiv Gajjar",
+      "action": "Added team profile for Yug Mehta "
+    },
+    {
       "time": "2026-01-29T15:35:37.250Z",
       "user": "Parthiv Gajjar",
       "action": "Added team profile for Samarth Kakkad "
@@ -244,6 +249,14 @@
     }
   ],
   "roles": [
+    {
+      "id": 1769700976235,
+      "name": "Yug Mehta ",
+      "title": "Backend Developer ",
+      "skills": "node.js, python, Java, Spring ",
+      "batch": "Silver",
+      "author": "Parthiv Gajjar"
+    },
     {
       "id": 1769700937249,
       "name": "Samarth Kakkad ",
