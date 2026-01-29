@@ -31,6 +31,11 @@
   ],
   "logs": [
     {
+      "time": "2026-01-29T15:34:44.848Z",
+      "user": "Parthiv Gajjar",
+      "action": "Removed item from roles"
+    },
+    {
       "time": "2026-01-29T15:34:25.885Z",
       "user": "Parthiv Gajjar",
       "action": "Added team profile for Parthiv Gajjar "
@@ -228,14 +233,5 @@
       "color": "yellow"
     }
   ],
-  "roles": [
-    {
-      "id": 1769700865885,
-      "name": "Parthiv Gajjar ",
-      "title": "Lead Developer ",
-      "skills": "node.js, HTML, CSS, C++, C, Java",
-      "batch": "Silver",
-      "author": "Parthiv Gajjar"
-    }
-  ]
+  "roles": []
 }
