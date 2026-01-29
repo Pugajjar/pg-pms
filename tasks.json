@@ -31,6 +31,11 @@
   ],
   "logs": [
     {
+      "time": "2026-01-29T15:34:25.885Z",
+      "user": "Parthiv Gajjar",
+      "action": "Added team profile for Parthiv Gajjar "
+    },
+    {
       "time": "2026-01-29T15:27:29.544Z",
       "user": "Parthiv Gajjar",
       "action": "Posted a sticky note"
@@ -223,6 +228,14 @@
       "color": "yellow"
     }
   ],
-
-  "roles": []
+  "roles": [
+    {
+      "id": 1769700865885,
+      "name": "Parthiv Gajjar ",
+      "title": "Lead Developer ",
+      "skills": "node.js, HTML, CSS, C++, C, Java",
+      "batch": "Silver",
+      "author": "Parthiv Gajjar"
+    }
+  ]
 }
