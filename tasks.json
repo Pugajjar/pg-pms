@@ -31,6 +31,11 @@
   ],
   "logs": [
     {
+      "time": "2026-01-29T15:35:37.250Z",
+      "user": "Parthiv Gajjar",
+      "action": "Added team profile for Samarth Kakkad "
+    },
+    {
       "time": "2026-01-29T15:34:52.453Z",
       "user": "Parthiv Gajjar",
       "action": "Added team profile for Parthiv Gajjar "
@@ -239,6 +244,14 @@
     }
   ],
   "roles": [
+    {
+      "id": 1769700937249,
+      "name": "Samarth Kakkad ",
+      "title": "UI / UX Deigner",
+      "skills": "Figma, Canva, HTML",
+      "batch": "Wood",
+      "author": "Parthiv Gajjar"
+    },
     {
       "id": 1769700892453,
       "name": "Parthiv Gajjar ",
