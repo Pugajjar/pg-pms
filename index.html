@@ -15,7 +15,6 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* Capsule Button Styling */
         .capsule-btn {
             border: 1px solid #e5e7eb;
             border-radius: 9999px;
@@ -30,11 +29,10 @@
             outline-offset: 2px;
         }
 
-        /* Hover Effect: Black Outline */
         .capsule-btn:hover {
             border-color: #000000;
             outline: 2px solid #000000;
-            outline-offset: -2px; /* Pulls the outline inside for a clean look */
+            outline-offset: -2px;
             transform: translateY(-1px);
         }
 
@@ -47,31 +45,26 @@
         .capsule-btn-dark:hover {
             background: #1a1a1a;
             outline: 2px solid #000000;
-            outline-offset: 2px; /* Outer outline for dark buttons */
+            outline-offset: 2px;
         }
 
-        /* UI Elements */
-        .status-select {
-            appearance: none;
-            background: #f9fafb;
-            border: 1px solid #f3f4f6;
-            border-radius: 9999px;
-            padding: 4px 12px;
-            font-size: 10px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s;
+        /* Sticky Note Styles */
+        .sticky-note {
+            padding: 20px;
+            border-radius: 2px; /* Traditional post-it look */
+            min-height: 200px;
+            position: relative;
+            box-shadow: 5px 5px 15px rgba(0,0,0,0.05);
+            transition: transform 0.2s;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
-        .status-select:hover { border-color: #000; }
-
-        input, select, textarea {
-            border: 1px solid #e5e7eb;
-            border-radius: 12px;
-            padding: 10px 16px;
-            outline: none;
-            transition: all 0.2s;
-        }
-        input:focus { border-color: #000000; }
+        .sticky-note:hover { transform: scale(1.02) rotate(1deg); }
+        .note-yellow { background-color: #fef3c7; border-bottom: 2px solid #f59e0b; }
+        .note-blue { background-color: #e0f2fe; border-bottom: 2px solid #3b82f6; }
+        .note-pink { background-color: #fce7f3; border-bottom: 2px solid #ec4899; }
+        .note-green { background-color: #dcfce7; border-bottom: 2px solid #22c55e; }
 
         .sidebar-item {
             cursor: pointer;
@@ -82,14 +75,8 @@
             font-weight: 500;
             color: #6b7280;
         }
-        .sidebar-item:hover { 
-            background: #f9fafb; 
-            color: #000;
-        }
-        .sidebar-item.active { 
-            background: #000000; 
-            color: #ffffff; 
-        }
+        .sidebar-item:hover { background: #f9fafb; color: #000; }
+        .sidebar-item.active { background: #000000; color: #ffffff; }
 
         .task-card {
             border: 1px solid #f3f4f6;
@@ -98,14 +85,9 @@
             padding: 20px;
             transition: all 0.3s ease;
         }
-        .task-card:hover {
-            border-color: #e5e7eb;
-            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.05);
-        }
-
-        .overdue { color: #ef4444 !important; font-weight: 600; }
         
         .no-scrollbar::-webkit-scrollbar { display: none; }
+        .overdue { color: #ef4444 !important; font-weight: 600; }
     </style>
 </head>
 <body>
@@ -113,19 +95,16 @@
     <!-- LOGIN SCREEN -->
     <div id="login-screen" class="fixed inset-0 z-[100] bg-white flex items-center justify-center p-6">
         <div class="max-w-sm w-full text-center">
-            <!-- LOGO INSERTION -->
             <div class="mb-10">
                 <img src="logo.png" alt="PG-PMS Logo" class="h-16 mx-auto object-contain" onerror="this.src='https://ui-avatars.com/api/?name=PG+PMS&background=000&color=fff&size=128'">
             </div>
-            
             <h1 class="text-2xl font-bold mb-2 tracking-tight">Project Management</h1>
             <p class="text-gray-400 mb-8 text-sm font-light">Access your workspace with your passcode.</p>
-            
             <div class="space-y-4">
-                <input type="password" id="passcode" placeholder="Enter Token (ghp_...)" class="w-full text-center">
-                <button onclick="login()" class="w-full capsule-btn capsule-btn-dark justify-center py-3">Enter Workspace</button>
+                <input type="text" id="user-nickname" placeholder="Your Name (e.g. Yug)" class="w-full text-center border p-3 rounded-xl mb-2">
+                <input type="password" id="passcode" placeholder="GitHub Token (ghp_...)" class="w-full text-center border p-3 rounded-xl">
+                <button onclick="login()" class="w-full capsule-btn capsule-btn-dark justify-center py-3 font-semibold">Enter Workspace</button>
             </div>
-            <p class="mt-8 text-[10px] text-gray-300 uppercase tracking-widest">Reliable • Serverless • Secure</p>
         </div>
     </div>
 
@@ -134,36 +113,27 @@
         
         <!-- SIDE NAVIGATION -->
         <aside class="w-full md:w-72 border-r border-gray-100 p-8 flex flex-col gap-10 bg-white">
-            <!-- DASHBOARD LOGO (TOP LEFT) -->
             <div class="flex items-center gap-4">
                 <img src="logo.png" alt="Logo" class="h-10 w-10 object-contain" onerror="this.src='https://ui-avatars.com/api/?name=PG&background=000&color=fff'">
                 <div class="flex flex-col">
                     <span class="font-bold text-lg leading-none tracking-tight">PG-PMS</span>
-                    <span class="text-[10px] text-gray-400 font-medium uppercase tracking-tighter">Workspace</span>
+                    <span class="text-[10px] text-gray-400 font-medium uppercase tracking-tighter" id="display-name-label">Team Member</span>
                 </div>
             </div>
 
             <nav class="flex flex-col gap-1.5 flex-1">
-                <div onclick="switchTab('tasks')" id="nav-tasks" class="sidebar-item active">
-                    <i class="fas fa-th-large mr-3 text-xs"></i> Dashboard
-                </div>
-                <div onclick="switchTab('workspace')" id="nav-workspace" class="sidebar-item">
-                    <i class="fas fa-file-invoice mr-3 text-xs"></i> Documentation
-                </div>
-                <div onclick="switchTab('logs')" id="nav-logs" class="sidebar-item">
-                    <i class="fas fa-stream mr-3 text-xs"></i> Audit Log
-                </div>
+                <div onclick="switchTab('tasks')" id="nav-tasks" class="sidebar-item active"><i class="fas fa-th-large mr-3 text-xs"></i> Dashboard</div>
+                <div onclick="switchTab('workspace')" id="nav-workspace" class="sidebar-item"><i class="fas fa-file-invoice mr-3 text-xs"></i> Documentation</div>
+                <div onclick="switchTab('logs')" id="nav-logs" class="sidebar-item"><i class="fas fa-stream mr-3 text-xs"></i> Audit Log</div>
             </nav>
 
-            <div class="space-y-4">
-                <div class="pt-6 border-t border-gray-50">
-                    <div class="flex justify-between items-center mb-2">
-                        <p class="text-[10px] uppercase text-gray-400 font-bold tracking-widest">Progress</p>
-                        <span class="text-[10px] font-bold text-black"><span id="global-percent">0</span>%</span>
-                    </div>
-                    <div class="w-full bg-gray-50 h-1.5 rounded-full overflow-hidden">
-                        <div id="global-progress-bar" class="bg-black h-full transition-all duration-1000" style="width: 0%"></div>
-                    </div>
+            <div class="space-y-4 pt-6 border-t border-gray-50">
+                <div class="flex justify-between items-center mb-2">
+                    <p class="text-[10px] uppercase text-gray-400 font-bold tracking-widest">Progress</p>
+                    <span class="text-[10px] font-bold text-black"><span id="global-percent">0</span>%</span>
+                </div>
+                <div class="w-full bg-gray-50 h-1.5 rounded-full overflow-hidden">
+                    <div id="global-progress-bar" class="bg-black h-full transition-all duration-1000" style="width: 0%"></div>
                 </div>
                 <button onclick="logout()" class="w-full capsule-btn text-xs text-red-500 border-red-50 hover:bg-red-50 justify-center">Sign Out</button>
             </div>
@@ -172,71 +142,40 @@
         <!-- CONTENT -->
         <main class="flex-1 p-6 md:p-12 overflow-y-auto no-scrollbar">
             
-            <!-- TOP BAR -->
             <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
                 <div>
                     <h2 id="tab-title" class="text-3xl font-bold tracking-tight">Project Tasks</h2>
                     <p id="tab-desc" class="text-gray-400 text-sm mt-1 font-light">Efficiently track and manage team responsibilities.</p>
                 </div>
                 <div class="flex gap-3">
-                    <button onclick="sync()" class="capsule-btn text-xs font-semibold">
-                        <i class="fas fa-rotate" id="sync-icon"></i> Refresh
-                    </button>
-                    <button id="add-btn" onclick="openModal()" class="capsule-btn capsule-btn-dark text-xs font-semibold">
-                        <i class="fas fa-plus"></i> New Entry
-                    </button>
+                    <button onclick="sync()" class="capsule-btn text-xs font-semibold"><i class="fas fa-rotate" id="sync-icon"></i> Refresh</button>
+                    <button id="add-btn" onclick="openModal()" class="capsule-btn capsule-btn-dark text-xs font-semibold"><i class="fas fa-plus"></i> New Entry</button>
                 </div>
             </div>
 
-            <!-- TASK KANBAN VIEW -->
-            <div id="tab-content-tasks" class="animate-in fade-in duration-500">
+            <!-- TASK VIEW -->
+            <div id="tab-content-tasks">
                 <div class="grid grid-cols-1 xl:grid-cols-4 gap-8">
-                    <!-- Columns -->
-                    <div class="space-y-6">
-                        <h4 class="text-[11px] font-bold uppercase tracking-[0.2em] text-gray-300 flex items-center">
-                            <span class="w-2 h-2 rounded-full bg-gray-200 mr-2"></span> To Do
-                        </h4>
-                        <div id="col-todo" class="space-y-4 min-h-[100px]"></div>
-                    </div>
-                    <div class="space-y-6">
-                        <h4 class="text-[11px] font-bold uppercase tracking-[0.2em] text-blue-400 flex items-center">
-                            <span class="w-2 h-2 rounded-full bg-blue-400 mr-2"></span> In Progress
-                        </h4>
-                        <div id="col-progress" class="space-y-4 min-h-[100px]"></div>
-                    </div>
-                    <div class="space-y-6">
-                        <h4 class="text-[11px] font-bold uppercase tracking-[0.2em] text-orange-400 flex items-center">
-                            <span class="w-2 h-2 rounded-full bg-orange-400 mr-2"></span> Review
-                        </h4>
-                        <div id="col-review" class="space-y-4 min-h-[100px]"></div>
-                    </div>
-                    <div class="space-y-6">
-                        <h4 class="text-[11px] font-bold uppercase tracking-[0.2em] text-green-500 flex items-center">
-                            <span class="w-2 h-2 rounded-full bg-green-500 mr-2"></span> Completed
-                        </h4>
-                        <div id="col-done" class="space-y-4 min-h-[100px]"></div>
-                    </div>
+                    <div class="space-y-6"><h4 class="text-[11px] font-bold uppercase tracking-[0.2em] text-gray-300">To Do</h4><div id="col-todo" class="space-y-4"></div></div>
+                    <div class="space-y-6"><h4 class="text-[11px] font-bold uppercase tracking-[0.2em] text-blue-400">In Progress</h4><div id="col-progress" class="space-y-4"></div></div>
+                    <div class="space-y-6"><h4 class="text-[11px] font-bold uppercase tracking-[0.2em] text-orange-400">Review</h4><div id="col-review" class="space-y-4"></div></div>
+                    <div class="space-y-6"><h4 class="text-[11px] font-bold uppercase tracking-[0.2em] text-green-500">Completed</h4><div id="col-done" class="space-y-4"></div></div>
                 </div>
             </div>
 
-            <!-- DOCUMENTS VIEW -->
-            <div id="tab-content-workspace" class="hidden animate-in fade-in duration-500">
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6" id="doc-container"></div>
+            <!-- DOCUMENTATION VIEW -->
+            <div id="tab-content-workspace" class="hidden">
+                <h4 class="text-[11px] font-bold uppercase tracking-[0.2em] text-gray-400 mb-6">Files & Resources</h4>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12" id="doc-container"></div>
+                
+                <h4 class="text-[11px] font-bold uppercase tracking-[0.2em] text-gray-400 mb-6">Team Sticky Notes</h4>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6" id="notes-container"></div>
             </div>
 
-            <!-- AUDIT LOG VIEW -->
-            <div id="tab-content-logs" class="hidden animate-in fade-in duration-500">
+            <!-- LOGS VIEW -->
+            <div id="tab-content-logs" class="hidden">
                 <div class="bg-white border border-gray-100 rounded-[24px] overflow-hidden">
-                    <table class="w-full text-left text-sm">
-                        <thead class="bg-gray-50/50 text-gray-400 font-bold uppercase text-[10px] tracking-widest">
-                            <tr>
-                                <th class="p-6">Timestamp</th>
-                                <th class="p-6">Team Member</th>
-                                <th class="p-6">Activity</th>
-                            </tr>
-                        </thead>
-                        <tbody id="log-table-body" class="divide-y divide-gray-50"></tbody>
-                    </table>
+                    <table class="w-full text-left text-sm"><tbody id="log-table-body" class="divide-y divide-gray-50"></tbody></table>
                 </div>
             </div>
 
@@ -246,60 +185,61 @@
     <!-- MODAL -->
     <div id="modal" class="fixed inset-0 z-[150] bg-black/10 backdrop-blur-md hidden flex items-center justify-center p-4">
         <div class="bg-white w-full max-w-md rounded-[32px] p-10 shadow-2xl border border-gray-100">
-            <h3 id="modal-title" class="text-xl font-bold mb-8">Add New Task</h3>
-            
+            <h3 id="modal-title" class="text-xl font-bold mb-8 text-black">New Task</h3>
             <div id="task-fields" class="space-y-5">
-                <div class="space-y-1">
-                    <label class="text-[10px] font-bold uppercase text-gray-400 ml-1">Task Details</label>
-                    <input type="text" id="m-task-text" placeholder="What needs to be done?" class="w-full bg-gray-50 border-transparent focus:bg-white">
-                </div>
+                <input type="text" id="m-task-text" placeholder="What needs to be done?" class="w-full bg-gray-50 p-3 rounded-xl border-none">
                 <div class="grid grid-cols-2 gap-4">
-                    <div class="space-y-1">
-                        <label class="text-[10px] font-bold uppercase text-gray-400 ml-1">Assignee</label>
-                        <input type="text" id="m-task-owner" placeholder="Name" class="w-full bg-gray-50 border-transparent focus:bg-white">
-                    </div>
-                    <div class="space-y-1">
-                        <label class="text-[10px] font-bold uppercase text-gray-400 ml-1">Deadline</label>
-                        <input type="date" id="m-task-date" class="w-full bg-gray-50 border-transparent focus:bg-white">
-                    </div>
+                    <input type="text" id="m-task-owner" placeholder="Assignee Name" class="w-full bg-gray-50 p-3 rounded-xl border-none">
+                    <input type="date" id="m-task-date" class="w-full bg-gray-50 p-3 rounded-xl border-none">
                 </div>
             </div>
-
             <div id="doc-fields" class="space-y-5 hidden">
-                <input type="text" id="m-doc-name" placeholder="Document Name (e.g., UI Design PPT)" class="w-full bg-gray-50 border-transparent">
-                <input type="url" id="m-doc-url" placeholder="https://link-to-resource.com" class="w-full bg-gray-50 border-transparent">
+                <input type="text" id="m-doc-name" placeholder="Document Name" class="w-full bg-gray-50 p-3 rounded-xl border-none">
+                <input type="url" id="m-doc-url" placeholder="https://..." class="w-full bg-gray-50 p-3 rounded-xl border-none">
             </div>
-
+            <div id="note-fields" class="space-y-5 hidden">
+                <textarea id="m-note-text" placeholder="Write a sticky note..." class="w-full bg-gray-50 p-3 rounded-xl border-none h-32"></textarea>
+                <div class="flex gap-2">
+                    <button onclick="setNoteColor('yellow')" class="w-8 h-8 rounded-full bg-[#fef3c7] border border-gray-200"></button>
+                    <button onclick="setNoteColor('blue')" class="w-8 h-8 rounded-full bg-[#e0f2fe] border border-gray-200"></button>
+                    <button onclick="setNoteColor('pink')" class="w-8 h-8 rounded-full bg-[#fce7f3] border border-gray-200"></button>
+                    <button onclick="setNoteColor('green')" class="w-8 h-8 rounded-full bg-[#dcfce7] border border-gray-200"></button>
+                </div>
+            </div>
             <div class="flex gap-3 mt-10">
-                <button onclick="closeModal()" class="flex-1 capsule-btn justify-center font-medium">Cancel</button>
-                <button onclick="submitModal()" class="flex-1 capsule-btn capsule-btn-dark justify-center font-medium">Save Item</button>
+                <button onclick="closeModal()" class="flex-1 capsule-btn justify-center">Cancel</button>
+                <button onclick="submitModal()" class="flex-1 capsule-btn capsule-btn-dark justify-center">Save Item</button>
             </div>
         </div>
     </div>
 
     <script>
-        // CONFIG - REPLACE OWNER
         const REPO_OWNER = "Pugajjar"; 
         const REPO_NAME = "pg-pms";
         const FILE_PATH = "tasks.json";
 
-        let state = { tasks: [], logs: [], docs: [], sha: null, token: null, currentTab: 'tasks' };
+        let state = { tasks: [], logs: [], docs: [], notes: [], sha: null, token: null, currentTab: 'tasks', currentUser: '', activeNoteColor: 'yellow' };
 
         async function login() {
-            const token = document.getElementById('passcode').value;
-            if(!token) return;
+            const name = document.getElementById('user-nickname').value.trim();
+            const token = document.getElementById('passcode').value.trim();
+            if(!name || !token) return alert("Enter both Name and Passcode!");
+            
+            state.currentUser = name;
             state.token = token;
             const success = await sync();
             if(success) {
                 document.getElementById('login-screen').classList.add('hidden');
                 document.getElementById('main-dashboard').classList.remove('hidden');
-                localStorage.setItem('pg_pms_v2_key', token);
+                document.getElementById('display-name-label').innerText = name;
+                localStorage.setItem('pg_pms_key_v3', token);
+                localStorage.setItem('pg_pms_user', name);
             }
         }
 
         async function sync() {
             const icon = document.getElementById('sync-icon');
-            icon.classList.add('fa-spin');
+            if(icon) icon.classList.add('fa-spin');
             try {
                 const res = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${FILE_PATH}`, {
                     headers: { "Authorization": `token ${state.token}` }
@@ -312,20 +252,19 @@
                 state.tasks = content.tasks || [];
                 state.logs = content.logs || [];
                 state.docs = content.docs || [];
+                state.notes = content.notes || [];
 
                 render();
                 return true;
             } catch (e) {
-                alert("Connection failed. Check your GitHub Token and Username.");
+                alert("Connection Failed. Check Token/Username.");
                 return false;
-            } finally { icon.classList.remove('fa-spin'); }
+            } finally { if(icon) icon.classList.remove('fa-spin'); }
         }
 
         async function commit(message) {
             const content = btoa(unescape(encodeURIComponent(JSON.stringify({
-                tasks: state.tasks,
-                logs: state.logs,
-                docs: state.docs
+                tasks: state.tasks, logs: state.logs, docs: state.docs, notes: state.notes
             }, null, 2))));
 
             const res = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${FILE_PATH}`, {
@@ -338,123 +277,123 @@
             render();
         }
 
-        function addLog(action) {
-            state.logs.unshift({
-                time: new Date().toISOString(),
-                user: state.tasks[0]?.owner || "Team Member",
-                action: action
-            });
-            if(state.logs.length > 30) state.logs.pop();
-        }
-
         function switchTab(tab) {
             state.currentTab = tab;
             document.querySelectorAll('.sidebar-item').forEach(i => i.classList.remove('active'));
             document.getElementById(`nav-${tab}`).classList.add('active');
-            
-            ['tasks', 'workspace', 'logs'].forEach(t => {
-                document.getElementById(`tab-content-${t}`).classList.add('hidden');
-            });
+            ['tasks', 'workspace', 'logs'].forEach(t => document.getElementById(`tab-content-${t}`).classList.add('hidden'));
             document.getElementById(`tab-content-${tab}`).classList.remove('hidden');
-
-            const headers = {
-                tasks: { title: "Project Tasks", desc: "Efficiently track and manage team responsibilities." },
-                workspace: { title: "Documentation", desc: "Central hub for all project assets and links." },
-                logs: { title: "Audit Log", desc: "Historical record of all workspace activities." }
-            };
-            document.getElementById('tab-title').innerText = headers[tab].title;
-            document.getElementById('tab-desc').innerText = headers[tab].desc;
+            
+            const titles = { tasks: ["Project Tasks", "Track team responsibilities."], workspace: ["Integrated Workspace", "Files and team sticky notes."], logs: ["Audit Log", "Activity history."] };
+            document.getElementById('tab-title').innerText = titles[tab][0];
+            document.getElementById('tab-desc').innerText = titles[tab][1];
+            document.getElementById('add-btn').innerText = tab === 'workspace' ? "+ New Asset" : "+ New Task";
             render();
         }
 
+        function setNoteColor(color) { state.activeNoteColor = color; }
+
         function render() {
-            // Task Kanban
+            // Task Rendering (Same as before)
             const cols = { 'To-Do': 'col-todo', 'In Progress': 'col-progress', 'Review': 'col-review', 'Done': 'col-done' };
             Object.values(cols).forEach(id => document.getElementById(id).innerHTML = '');
-            
             let completed = 0;
             state.tasks.forEach(t => {
                 if(t.status === 'Done') completed++;
-                const isOverdue = t.date && new Date(t.date) < new Date() && t.status !== 'Done';
-                
-                const card = `
+                document.getElementById(cols[t.status] || 'col-todo').innerHTML += `
                     <div class="task-card group">
-                        <div class="flex justify-between items-start mb-4">
-                            <span class="text-[10px] font-bold text-gray-300 uppercase tracking-widest">@${t.owner || 'unassigned'}</span>
-                            <button onclick="deleteItem('tasks', ${t.id})" class="opacity-0 group-hover:opacity-100 text-gray-300 hover:text-red-500 transition-all">
-                                <i class="fas fa-trash-alt text-[10px]"></i>
-                            </button>
-                        </div>
-                        <h5 class="text-sm font-semibold leading-relaxed mb-6">${t.text}</h5>
-                        <div class="flex justify-between items-center pt-4 border-t border-gray-50">
-                            <span class="text-[9px] font-bold tracking-tight ${isOverdue ? 'overdue' : 'text-gray-400'}">
-                                <i class="far fa-calendar mr-1"></i> ${t.date ? new Date(t.date).toLocaleDateString(undefined, {month:'short', day:'numeric'}) : 'No Date'}
-                            </span>
-                            <select onchange="updateStatus(${t.id}, this.value)" class="status-select">
+                        <div class="flex justify-between items-start mb-4"><span class="text-[10px] font-bold text-gray-300 uppercase tracking-widest">@${t.owner}</span>
+                        <button onclick="deleteItem('tasks', ${t.id})" class="opacity-0 group-hover:opacity-100 text-gray-200 hover:text-red-500"><i class="fas fa-trash text-[10px]"></i></button></div>
+                        <h5 class="text-sm font-semibold">${t.text}</h5>
+                        <div class="flex justify-between items-center mt-6 pt-4 border-t border-gray-50">
+                            <span class="text-[9px] font-bold text-gray-400">${t.date || 'No Date'}</span>
+                            <select onchange="updateStatus(${t.id}, this.value)" class="text-[10px] bg-gray-50 p-1 rounded-full">
                                 <option ${t.status === 'To-Do' ? 'selected' : ''}>To-Do</option>
                                 <option ${t.status === 'In Progress' ? 'selected' : ''}>In Progress</option>
                                 <option ${t.status === 'Review' ? 'selected' : ''}>Review</option>
                                 <option ${t.status === 'Done' ? 'selected' : ''}>Done</option>
                             </select>
                         </div>
-                    </div>
-                `;
-                const colId = cols[t.status] || 'col-todo';
-                document.getElementById(colId).innerHTML += card;
+                    </div>`;
             });
 
-            // Sidebar Progress
+            // Progress Bar
             const percent = state.tasks.length ? Math.round((completed / state.tasks.length) * 100) : 0;
             document.getElementById('global-progress-bar').style.width = percent + '%';
             document.getElementById('global-percent').innerText = percent;
 
             // Docs
-            const docContainer = document.getElementById('doc-container');
-            docContainer.innerHTML = state.docs.length ? '' : '<div class="col-span-full py-20 text-center text-gray-300 text-sm">No documents found. Click "New Entry" to add one.</div>';
-            state.docs.forEach(d => {
-                docContainer.innerHTML += `
-                    <div class="task-card flex flex-col items-center text-center group relative">
-                        <div class="w-12 h-12 bg-gray-50 rounded-2xl flex items-center justify-center mb-4 group-hover:bg-black group-hover:text-white transition-all">
-                            <i class="fas fa-file-lines text-lg"></i>
-                        </div>
-                        <h4 class="font-bold text-sm mb-2">${d.name}</h4>
-                        <a href="${d.url}" target="_blank" class="text-[10px] font-bold text-gray-400 hover:text-black uppercase tracking-widest">Open Link <i class="fas fa-arrow-up-right-from-square ml-1"></i></a>
-                        <button onclick="deleteItem('docs', ${d.id})" class="absolute top-4 right-4 opacity-0 group-hover:opacity-100 text-gray-200 hover:text-red-500"><i class="fas fa-times"></i></button>
-                    </div>
-                `;
-            });
+            const dCont = document.getElementById('doc-container');
+            dCont.innerHTML = state.docs.map(d => `<div class="task-card flex flex-col items-center p-6 relative group">
+                <i class="fas fa-file-pdf text-xl mb-2"></i><h4 class="font-bold text-xs">${d.name}</h4>
+                <a href="${d.url}" target="_blank" class="text-[9px] uppercase font-bold text-blue-500 mt-2">Open Link</a>
+                <button onclick="deleteItem('docs', ${d.id})" class="absolute top-4 right-4 opacity-0 group-hover:opacity-100"><i class="fas fa-times text-gray-200"></i></button>
+            </div>`).join('');
 
+            // Sticky Notes Logic
+            const nCont = document.getElementById('notes-container');
+            nCont.innerHTML = state.notes.map(n => `
+                <div class="sticky-note note-${n.color}">
+                    <p class="text-sm font-medium leading-relaxed italic text-gray-800">"${n.text}"</p>
+                    <div class="flex justify-between items-end mt-4 border-t border-black/5 pt-2">
+                        <span class="text-[10px] font-bold uppercase tracking-widest text-black/40">From: ${n.author}</span>
+                        ${n.author === state.currentUser ? `<button onclick="deleteItem('notes', ${n.id})" class="text-black/20 hover:text-red-500"><i class="fas fa-trash-alt text-[10px]"></i></button>` : ''}
+                    </div>
+                </div>`).join('');
+            
             // Logs
-            const logBody = document.getElementById('log-table-body');
-            logBody.innerHTML = '';
-            state.logs.forEach(l => {
-                logBody.innerHTML += `
-                    <tr>
-                        <td class="p-6 text-gray-400 font-mono text-[10px]">${new Date(l.time).toLocaleTimeString()}</td>
-                        <td class="p-6 font-bold text-xs">@${l.user}</td>
-                        <td class="p-6 text-gray-500 text-xs">${l.action}</td>
-                    </tr>
-                `;
-            });
+            document.getElementById('log-table-body').innerHTML = state.logs.slice(0,10).map(l => `<tr><td class="p-4 text-gray-300 text-[10px]">${new Date(l.time).toLocaleTimeString()}</td><td class="p-4 font-bold text-xs">@${l.user}</td><td class="p-4 text-gray-500 text-xs">${l.action}</td></tr>`).join('');
         }
 
         function openModal() {
-            const isDoc = state.currentTab === 'workspace';
-            document.getElementById('modal-title').innerText = isDoc ? "New Documentation" : "Create New Task";
-            document.getElementById('task-fields').classList.toggle('hidden', isDoc);
-            document.getElementById('doc-fields').classList.toggle('hidden', !isDoc);
+            const isWork = state.currentTab === 'workspace';
+            document.getElementById('modal-title').innerText = isWork ? "New Resource / Note" : "Create New Task";
+            document.getElementById('task-fields').classList.toggle('hidden', isWork);
+            document.getElementById('doc-fields').classList.toggle('hidden', true); // Initially hide docs
+            document.getElementById('note-fields').classList.toggle('hidden', !isWork);
+            
+            // Add a sub-switch in modal for Docs vs Notes? Let's just prompt for a Note first as you requested.
+            // If they want a Doc link, they can use the "Documentation" section later.
+            // For now, in Workspace Tab, + Button = New Sticky Note.
+            
+            if (isWork) {
+                // Let's add a button inside the modal to switch between Link and Note
+                document.getElementById('modal-title').innerHTML = `
+                    <div class="flex gap-4 mb-4 text-sm">
+                        <button onclick="toggleModalFields('note')" id="btn-m-note" class="font-bold text-black border-b-2 border-black">Sticky Note</button>
+                        <button onclick="toggleModalFields('doc')" id="btn-m-doc" class="font-bold text-gray-300">File Link</button>
+                    </div>`;
+            }
+
             document.getElementById('modal').classList.remove('hidden');
+        }
+
+        function toggleModalFields(type) {
+            const isNote = type === 'note';
+            document.getElementById('note-fields').classList.toggle('hidden', !isNote);
+            document.getElementById('doc-fields').classList.toggle('hidden', isNote);
+            document.getElementById('btn-m-note').className = isNote ? 'font-bold text-black border-b-2 border-black' : 'font-bold text-gray-300';
+            document.getElementById('btn-m-doc').className = !isNote ? 'font-bold text-black border-b-2 border-black' : 'font-bold text-gray-300';
         }
 
         function closeModal() { document.getElementById('modal').classList.add('hidden'); }
 
         async function submitModal() {
-            if(state.currentTab === 'workspace') {
-                const name = document.getElementById('m-doc-name').value;
-                const url = document.getElementById('m-doc-url').value;
-                if(!name || !url) return;
-                state.docs.unshift({ id: Date.now(), name, url });
-                addLog(`Added document: ${name}`);
+            const isWork = state.currentTab === 'workspace';
+            if (isWork) {
+                const isNote = !document.getElementById('note-fields').classList.contains('hidden');
+                if(isNote) {
+                    const text = document.getElementById('m-note-text').value;
+                    if(!text) return;
+                    state.notes.unshift({ id: Date.now(), text, author: state.currentUser, color: state.activeNoteColor });
+                    addLog(`Posted a sticky note`);
+                } else {
+                    const name = document.getElementById('m-doc-name').value;
+                    const url = document.getElementById('m-doc-url').value;
+                    if(!name || !url) return;
+                    state.docs.unshift({ id: Date.now(), name, url });
+                    addLog(`Linked document: ${name}`);
+                }
             } else {
                 const text = document.getElementById('m-task-text').value;
                 const owner = document.getElementById('m-task-owner').value;
@@ -467,26 +406,34 @@
             await commit("Workspace Update");
         }
 
-        async function updateStatus(id, newStatus) {
-            const t = state.tasks.find(x => x.id === id);
-            t.status = newStatus;
-            addLog(`Moved "${t.text}" to ${newStatus}`);
-            await commit("Status Change");
-        }
-
         async function deleteItem(type, id) {
-            if(!confirm("Remove this entry permanently?")) return;
+            // Check ownership for notes
+            if(type === 'notes') {
+                const item = state.notes.find(n => n.id === id);
+                if(item.author !== state.currentUser) return alert("You can't delete someone else's note!");
+            }
+            if(!confirm("Delete permanently?")) return;
             state[type] = state[type].filter(x => x.id !== id);
-            addLog(`Deleted item from ${type}`);
-            await commit("Item Deletion");
+            addLog(`Removed item from ${type}`);
+            await commit("Item Deleted");
         }
 
-        function logout() { localStorage.removeItem('pg_pms_v2_key'); location.reload(); }
+        async function updateStatus(id, newS) {
+            const t = state.tasks.find(x => x.id === id);
+            t.status = newS;
+            addLog(`Updated "${t.text}" to ${newS}`);
+            await commit("Status Update");
+        }
+
+        function addLog(action) { state.logs.unshift({ time: new Date().toISOString(), user: state.currentUser, action }); }
+        function logout() { localStorage.clear(); location.reload(); }
 
         window.onload = () => {
-            const key = localStorage.getItem('pg_pms_v2_key');
-            if(key) {
-                document.getElementById('passcode').value = key;
+            const token = localStorage.getItem('pg_pms_key_v3');
+            const user = localStorage.getItem('pg_pms_user');
+            if(token && user) {
+                document.getElementById('user-nickname').value = user;
+                document.getElementById('passcode').value = token;
                 login();
             }
         };
