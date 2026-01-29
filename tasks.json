@@ -31,6 +31,11 @@
   ],
   "logs": [
     {
+      "time": "2026-01-29T15:27:29.544Z",
+      "user": "Parthiv Gajjar",
+      "action": "Posted a sticky note"
+    },
+    {
       "time": "2026-01-29T15:22:06.755Z",
       "user": "Parthiv Gajjar",
       "action": "Posted a sticky note"
@@ -199,6 +204,12 @@
     }
   ],
   "notes": [
+    {
+      "id": 1769700449544,
+      "text": "@YUG Ahhh the button should be more capsule",
+      "author": "Parthiv Gajjar",
+      "color": "green"
+    },
     {
       "id": 1769700126755,
       "text": "The UI should be #595959 rather than #494949",
