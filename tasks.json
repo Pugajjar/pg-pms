@@ -31,6 +31,11 @@
   ],
   "logs": [
     {
+      "time": "2026-01-29T15:06:40.176Z",
+      "user": "Parthiv Gajjar",
+      "action": "Posted a sticky note"
+    },
+    {
       "time": "2026-01-29T15:06:18.024Z",
       "user": "Parthiv Gajjar",
       "action": "Updated \"Research Analysis\" to Done"
@@ -167,5 +172,12 @@
     }
   ],
   "docs": [],
-  "notes": []
+  "notes": [
+    {
+      "id": 1769699200176,
+      "text": "The PPT Design must be more bright ",
+      "author": "Parthiv Gajjar",
+      "color": "yellow"
+    }
+  ]
 }
