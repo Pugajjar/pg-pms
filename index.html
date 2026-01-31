@@ -8,33 +8,56 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
+        :root {
+            --bg-primary: #ffffff;
+            --bg-sidebar: #ffffff;
+            --bg-hover: #f9fafb;
+            --border-color: #e5e7eb;
+            --text-main: #333333;
+            --text-dim: #6b7280;
+            --card-bg: #ffffff;
+        }
+
+        [data-theme='dark'] {
+            --bg-primary: #1f1f1f;
+            --bg-sidebar: #141414;
+            --bg-hover: #1a1a1a;
+            --border-color: #313131;
+            --text-main: #ffffff;
+            --text-dim: #a1a1aa;
+            --card-bg: #1f1f1f;
+        }
+
         body { 
             font-family: 'Poppins', sans-serif; 
-            color: #333333; 
-            background-color: #ffffff; 
+            color: var(--text-main); 
+            background-color: var(--bg-primary); 
             -webkit-font-smoothing: antialiased;
+            transition: background-color 0.3s, color 0.3s;
         }
 
         /* Capsule Button Styling */
         .capsule-btn {
-            border: 1px solid #e5e7eb;
+            border: 1px solid var(--border-color);
             border-radius: 9999px;
             padding: 8px 24px;
             transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            background: #ffffff;
+            background: var(--card-bg);
+            color: var(--text-main);
             cursor: pointer;
             outline: 2px solid transparent;
             outline-offset: 2px;
         }
 
         .capsule-btn:hover {
-            border-color: #000000;
-            outline: 2px solid #000000;
+            border-color: var(--text-main);
+            outline: 2px solid var(--text-main);
             outline-offset: -2px;
             transform: translateY(-1px);
+            background: var(--bg-hover);
         }
 
         .capsule-btn-dark {
@@ -43,10 +66,10 @@
             border: 1px solid #000000;
         }
 
-        .capsule-btn-dark:hover {
-            background: #1a1a1a;
-            outline: 2px solid #000000;
-            outline-offset: 2px;
+        [data-theme='dark'] .capsule-btn-dark {
+            background: #ffffff;
+            color: #000000;
+            border-color: #ffffff;
         }
 
         /* Sticky Note Styles */
@@ -60,8 +83,10 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
+            color: #333333; /* Notes stay readable */
         }
-        .sticky-note:hover { transform: scale(1.02) rotate(1deg); }
+        [data-theme='dark'] .sticky-note { opacity: 0.9; }
+
         .note-yellow { background-color: #fef3c7; border-bottom: 3px solid #f59e0b; }
         .note-blue { background-color: #e0f2fe; border-bottom: 3px solid #3b82f6; }
         .note-pink { background-color: #fce7f3; border-bottom: 3px solid #ec4899; }
@@ -80,14 +105,14 @@
             transition: all 0.2s;
             font-size: 14px;
             font-weight: 500;
-            color: #6b7280;
+            color: var(--text-dim);
         }
-        .sidebar-item:hover { background: #f9fafb; color: #000; }
-        .sidebar-item.active { background: #000000; color: #ffffff; }
+        .sidebar-item:hover { background: var(--bg-hover); color: var(--text-main); }
+        .sidebar-item.active { background: var(--text-main); color: var(--bg-primary); }
 
         .task-card {
-            border: 1px solid #f3f4f6;
-            background: #ffffff;
+            border: 1px solid var(--border-color);
+            background: var(--card-bg);
             border-radius: 20px;
             padding: 20px;
             transition: all 0.3s ease;
@@ -97,25 +122,31 @@
         .overdue { color: #ef4444 !important; font-weight: 600; }
 
         input, select, textarea {
-            border: 1px solid #e5e7eb;
+            border: 1px solid var(--border-color);
+            background: var(--bg-sidebar);
+            color: var(--text-main);
             border-radius: 12px;
             padding: 10px 16px;
             outline: none;
             transition: border-color 0.2s;
         }
-        input:focus { border-color: #000000; }
+        input:focus { border-color: var(--text-main); }
+
+        aside { background-color: var(--bg-sidebar); border-color: var(--border-color); transition: all 0.3s; }
+        main { background-color: var(--bg-primary); transition: all 0.3s; }
+        hr { border-color: var(--border-color); }
     </style>
 </head>
-<body class="bg-white">
+<body data-theme="light">
 
     <!-- LOGIN SCREEN -->
-    <div id="login-screen" class="fixed inset-0 z-[100] bg-white flex items-center justify-center p-6">
+    <div id="login-screen" class="fixed inset-0 z-[100] bg-[var(--bg-primary)] flex items-center justify-center p-6">
         <div class="max-w-sm w-full text-center">
             <div class="mb-10">
                 <img src="logo.png" alt="PG-PMS Logo" class="h-16 mx-auto object-contain" onerror="this.src='https://ui-avatars.com/api/?name=PG+PMS&background=000&color=fff&size=128'">
             </div>
             <h1 class="text-2xl font-bold mb-2 tracking-tight">Project Management</h1>
-            <p class="text-gray-400 mb-8 text-sm font-light">Access your workspace with your passcode.</p>
+            <p class="text-[var(--text-dim)] mb-8 text-sm font-light">Access your workspace with your passcode.</p>
             <div class="space-y-4">
                 <input type="text" id="user-nickname" placeholder="Your Name (e.g. Yug)" class="w-full text-center">
                 <input type="password" id="passcode" placeholder="GitHub Token (ghp_...)" class="w-full text-center">
@@ -128,12 +159,12 @@
     <div id="main-dashboard" class="hidden min-h-screen flex flex-col md:flex-row">
         
         <!-- SIDE NAVIGATION -->
-        <aside class="w-full md:w-72 border-r border-gray-100 p-8 flex flex-col gap-10 bg-white">
+        <aside class="w-full md:w-72 border-r p-8 flex flex-col gap-10">
             <div class="flex items-center gap-4">
                 <img src="logo.png" alt="Logo" class="h-10 w-10 object-contain" onerror="this.src='https://ui-avatars.com/api/?name=PG&background=000&color=fff'">
                 <div class="flex flex-col">
                     <span class="font-bold text-lg leading-none tracking-tight">PG-PMS</span>
-                    <span class="text-[10px] text-gray-400 font-medium uppercase tracking-tighter" id="display-name-label">Team Member</span>
+                    <span class="text-[10px] text-[var(--text-dim)] font-medium uppercase tracking-tighter" id="display-name-label">Team Member</span>
                 </div>
             </div>
 
@@ -142,15 +173,16 @@
                 <div onclick="switchTab('workspace')" id="nav-workspace" class="sidebar-item"><i class="fas fa-file-invoice mr-3 text-xs"></i> Documentation</div>
                 <div onclick="switchTab('logs')" id="nav-logs" class="sidebar-item"><i class="fas fa-stream mr-3 text-xs"></i> Audit Log</div>
                 <div onclick="switchTab('roles')" id="nav-roles" class="sidebar-item"><i class="fas fa-id-badge mr-3 text-xs"></i> Team Roles</div>
+                <div onclick="switchTab('settings')" id="nav-settings" class="sidebar-item"><i class="fas fa-cog mr-3 text-xs"></i> Settings</div>
             </nav>
 
-            <div class="space-y-4 pt-6 border-t border-gray-50">
+            <div class="space-y-4 pt-6 border-t border-[var(--border-color)]">
                 <div class="flex justify-between items-center mb-2">
-                    <p class="text-[10px] uppercase text-gray-400 font-bold tracking-widest">Progress</p>
-                    <span class="text-[10px] font-bold text-black"><span id="global-percent">0</span>%</span>
+                    <p class="text-[10px] uppercase text-[var(--text-dim)] font-bold tracking-widest">Progress</p>
+                    <span class="text-[10px] font-bold"><span id="global-percent">0</span>%</span>
                 </div>
-                <div class="w-full bg-gray-50 h-1.5 rounded-full overflow-hidden">
-                    <div id="global-progress-bar" class="bg-black h-full transition-all duration-1000" style="width: 0%"></div>
+                <div class="w-full bg-[var(--bg-hover)] h-1.5 rounded-full overflow-hidden">
+                    <div id="global-progress-bar" class="bg-[var(--text-main)] h-full transition-all duration-1000" style="width: 0%"></div>
                 </div>
                 <button onclick="logout()" class="w-full capsule-btn text-xs text-red-500 border-red-50 hover:bg-red-50 justify-center">Sign Out</button>
             </div>
@@ -162,7 +194,7 @@
             <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
                 <div>
                     <h2 id="tab-title" class="text-3xl font-bold tracking-tight">Project Tasks</h2>
-                    <p id="tab-desc" class="text-gray-400 text-sm mt-1 font-light">Efficiently track and manage team responsibilities.</p>
+                    <p id="tab-desc" class="text-[var(--text-dim)] text-sm mt-1 font-light">Efficiently track and manage team responsibilities.</p>
                 </div>
                 <div class="flex gap-3">
                     <button onclick="sync()" class="capsule-btn text-xs font-semibold"><i class="fas fa-rotate" id="sync-icon"></i> Refresh</button>
@@ -173,7 +205,7 @@
             <!-- TASK VIEW -->
             <div id="tab-content-tasks">
                 <div class="grid grid-cols-1 xl:grid-cols-4 gap-8">
-                    <div class="space-y-6"><h4 class="text-[11px] font-bold uppercase tracking-[0.2em] text-gray-300">To Do</h4><div id="col-todo" class="space-y-4"></div></div>
+                    <div class="space-y-6"><h4 class="text-[11px] font-bold uppercase tracking-[0.2em] text-[var(--text-dim)]">To Do</h4><div id="col-todo" class="space-y-4"></div></div>
                     <div class="space-y-6"><h4 class="text-[11px] font-bold uppercase tracking-[0.2em] text-blue-400">In Progress</h4><div id="col-progress" class="space-y-4"></div></div>
                     <div class="space-y-6"><h4 class="text-[11px] font-bold uppercase tracking-[0.2em] text-orange-400">Review</h4><div id="col-review" class="space-y-4"></div></div>
                     <div class="space-y-6"><h4 class="text-[11px] font-bold uppercase tracking-[0.2em] text-green-500">Completed</h4><div id="col-done" class="space-y-4"></div></div>
@@ -182,21 +214,20 @@
 
             <!-- DOCUMENTATION VIEW -->
             <div id="tab-content-workspace" class="hidden">
-                <h4 class="text-[11px] font-bold uppercase tracking-[0.2em] text-gray-400 mb-6">Files & Resources</h4>
+                <h4 class="text-[11px] font-bold uppercase tracking-[0.2em] text-[var(--text-dim)] mb-6">Files & Resources</h4>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12" id="doc-container"></div>
-                
-                <h4 class="text-[11px] font-bold uppercase tracking-[0.2em] text-gray-400 mb-6">Team Sticky Notes</h4>
+                <h4 class="text-[11px] font-bold uppercase tracking-[0.2em] text-[var(--text-dim)] mb-6">Team Sticky Notes</h4>
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6" id="notes-container"></div>
             </div>
 
             <!-- LOGS VIEW -->
             <div id="tab-content-logs" class="hidden">
-                <div class="bg-white border border-gray-100 rounded-[24px] overflow-hidden">
+                <div class="border border-[var(--border-color)] rounded-[24px] overflow-hidden">
                     <table class="w-full text-left text-sm">
-                        <thead class="bg-gray-50/50 text-gray-400 font-bold uppercase text-[10px] tracking-widest">
+                        <thead class="bg-[var(--bg-hover)] text-[var(--text-dim)] font-bold uppercase text-[10px] tracking-widest">
                             <tr><th class="p-6">Time</th><th class="p-6">Member</th><th class="p-6">Activity</th></tr>
                         </thead>
-                        <tbody id="log-table-body" class="divide-y divide-gray-50"></tbody>
+                        <tbody id="log-table-body" class="divide-y divide-[var(--border-color)]"></tbody>
                     </table>
                 </div>
             </div>
@@ -206,14 +237,41 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="roles-container"></div>
             </div>
 
+            <!-- SETTINGS VIEW -->
+            <div id="tab-content-settings" class="hidden">
+                <div class="max-w-lg space-y-10">
+                    <div class="space-y-4">
+                        <h4 class="text-sm font-bold uppercase tracking-widest text-[var(--text-dim)]">Appearance</h4>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div onclick="setTheme('light')" id="theme-light-card" class="p-6 border rounded-2xl cursor-pointer transition-all flex flex-col items-center gap-4 hover:border-black">
+                                <div class="w-12 h-12 rounded-full bg-white border shadow-sm"></div>
+                                <span class="font-medium text-sm text-[#333]">Light Mode</span>
+                            </div>
+                            <div onclick="setTheme('dark')" id="theme-dark-card" class="p-6 border rounded-2xl cursor-pointer transition-all flex flex-col items-center gap-4 hover:border-white">
+                                <div class="w-12 h-12 rounded-full bg-[#1f1f1f] border border-[#313131] shadow-sm"></div>
+                                <span class="font-medium text-sm text-white">Dark Mode</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="pt-10 border-t border-[var(--border-color)]">
+                        <h4 class="text-sm font-bold uppercase tracking-widest text-[var(--text-dim)]">System Information</h4>
+                        <div class="mt-4 p-6 bg-[var(--bg-hover)] rounded-2xl">
+                            <p class="text-xs font-mono text-[var(--text-dim)]">Version: 2.1.0-Production</p>
+                            <p class="text-xs font-mono text-[var(--text-dim)] mt-2">Environment: GitHub Serverless</p>
+                            <p class="text-xs font-mono text-[var(--text-dim)] mt-2">Active User: <span id="settings-user-name"></span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </main>
     </div>
 
     <!-- MODAL -->
-    <div id="modal" class="fixed inset-0 z-[150] bg-black/10 backdrop-blur-md hidden flex items-center justify-center p-4">
-        <div class="bg-white w-full max-w-md rounded-[32px] p-10 shadow-2xl border border-gray-100">
-            <h3 id="modal-title" class="text-xl font-bold mb-8 text-black">New Item</h3>
-            
+    <div id="modal" class="fixed inset-0 z-[150] bg-black/20 backdrop-blur-md hidden flex items-center justify-center p-4">
+        <div class="bg-[var(--card-bg)] w-full max-w-md rounded-[32px] p-10 shadow-2xl border border-[var(--border-color)]">
+            <h3 id="modal-title" class="text-xl font-bold mb-8">New Item</h3>
             <div id="task-fields" class="space-y-5">
                 <input type="text" id="m-task-text" placeholder="What needs to be done?" class="w-full">
                 <div class="grid grid-cols-2 gap-4">
@@ -221,12 +279,10 @@
                     <input type="date" id="m-task-date" class="w-full">
                 </div>
             </div>
-
             <div id="doc-fields" class="space-y-5 hidden">
                 <input type="text" id="m-doc-name" placeholder="Document Name" class="w-full">
                 <input type="url" id="m-doc-url" placeholder="https://..." class="w-full">
             </div>
-
             <div id="note-fields" class="space-y-5 hidden">
                 <textarea id="m-note-text" placeholder="Write a sticky note..." class="w-full h-32"></textarea>
                 <div class="flex gap-2">
@@ -236,19 +292,17 @@
                     <button onclick="setNoteColor('green')" class="w-8 h-8 rounded-full bg-[#dcfce7] border border-gray-200"></button>
                 </div>
             </div>
-
             <div id="role-fields" class="space-y-5 hidden">
                 <input type="text" id="m-role-name" placeholder="Member Name" class="w-full">
                 <input type="text" id="m-role-title" placeholder="Position (e.g. Lead Designer)" class="w-full">
                 <input type="text" id="m-role-skills" placeholder="Skills (Comma separated)" class="w-full">
-                <select id="m-role-batch" class="w-full bg-gray-50">
+                <select id="m-role-batch" class="w-full">
                     <option value="Wood">Wood (Beginner)</option>
                     <option value="Bronze">Bronze (Junior)</option>
                     <option value="Silver">Silver (Mid-Level)</option>
                     <option value="Gold">Gold (Senior/Lead)</option>
                 </select>
             </div>
-
             <div class="flex gap-3 mt-10">
                 <button onclick="closeModal()" class="flex-1 capsule-btn justify-center">Cancel</button>
                 <button onclick="submitModal()" class="flex-1 capsule-btn capsule-btn-dark justify-center">Save Item</button>
@@ -257,11 +311,12 @@
     </div>
 
     <script>
-        const REPO_OWNER = "Pugajjar"; // <-- REPLACE THIS
+        // CONFIG - REPLACE OWNER
+        const REPO_OWNER = "Pugajjar"; 
         const REPO_NAME = "pg-pms";
         const FILE_PATH = "tasks.json";
 
-        let state = { tasks: [], logs: [], docs: [], notes: [], roles: [], sha: null, token: null, currentTab: 'tasks', currentUser: '', activeNoteColor: 'yellow' };
+        let state = { tasks: [], logs: [], docs: [], notes: [], roles: [], sha: null, token: null, currentTab: 'tasks', currentUser: '', activeNoteColor: 'yellow', theme: 'light' };
 
         async function login() {
             const name = document.getElementById('user-nickname').value.trim();
@@ -275,7 +330,8 @@
                 document.getElementById('login-screen').classList.add('hidden');
                 document.getElementById('main-dashboard').classList.remove('hidden');
                 document.getElementById('display-name-label').innerText = name;
-                localStorage.setItem('pg_pms_key_v4', token);
+                document.getElementById('settings-user-name').innerText = name;
+                localStorage.setItem('pg_pms_key_v5', token);
                 localStorage.setItem('pg_pms_user', name);
             }
         }
@@ -325,19 +381,37 @@
             state.currentTab = tab;
             document.querySelectorAll('.sidebar-item').forEach(i => i.classList.remove('active'));
             document.getElementById(`nav-${tab}`).classList.add('active');
-            ['tasks', 'workspace', 'logs', 'roles'].forEach(t => document.getElementById(`tab-content-${t}`).classList.add('hidden'));
+            ['tasks', 'workspace', 'logs', 'roles', 'settings'].forEach(t => document.getElementById(`tab-content-${t}`).classList.add('hidden'));
             document.getElementById(`tab-content-${tab}`).classList.remove('hidden');
             
             const titles = { 
                 tasks: ["Project Tasks", "Track team responsibilities."], 
                 workspace: ["Integrated Workspace", "Files and team sticky notes."], 
                 logs: ["Audit Log", "Activity history."],
-                roles: ["Team Roles", "Expertise, seniority, and skills gallery."]
+                roles: ["Team Roles", "Expertise and seniority gallery."],
+                settings: ["Settings", "Personalize your PG-PMS experience."]
             };
             document.getElementById('tab-title').innerText = titles[tab][0];
             document.getElementById('tab-desc').innerText = titles[tab][1];
-            document.getElementById('add-btn').innerText = tab === 'tasks' ? "+ New Task" : tab === 'roles' ? "+ Add Profile" : "+ New Asset";
+            document.getElementById('add-btn').classList.toggle('hidden', tab === 'settings' || tab === 'logs');
             render();
+        }
+
+        function setTheme(theme) {
+            state.theme = theme;
+            document.body.setAttribute('data-theme', theme);
+            localStorage.setItem('pg_pms_theme', theme);
+            
+            const lCard = document.getElementById('theme-light-card');
+            const dCard = document.getElementById('theme-dark-card');
+            
+            if(theme === 'dark') {
+                dCard.style.borderColor = '#ffffff';
+                lCard.style.borderColor = 'var(--border-color)';
+            } else {
+                lCard.style.borderColor = '#000000';
+                dCard.style.borderColor = 'var(--border-color)';
+            }
         }
 
         function setNoteColor(color) { state.activeNoteColor = color; }
@@ -349,14 +423,17 @@
             let completed = 0;
             state.tasks.forEach(t => {
                 if(t.status === 'Done') completed++;
+                const isOverdue = t.date && new Date(t.date) < new Date() && t.status !== 'Done';
                 document.getElementById(cols[t.status] || 'col-todo').innerHTML += `
                     <div class="task-card group">
-                        <div class="flex justify-between items-start mb-4"><span class="text-[10px] font-bold text-gray-300 uppercase tracking-widest">@${t.owner}</span>
-                        <button onclick="deleteItem('tasks', ${t.id})" class="opacity-0 group-hover:opacity-100 text-gray-200 hover:text-red-500"><i class="fas fa-trash text-[10px]"></i></button></div>
+                        <div class="flex justify-between items-start mb-4">
+                            <span class="text-[10px] font-bold text-[var(--text-dim)] uppercase tracking-widest">@${t.owner}</span>
+                            <button onclick="deleteItem('tasks', ${t.id})" class="opacity-0 group-hover:opacity-100 text-[var(--text-dim)] hover:text-red-500"><i class="fas fa-trash text-[10px]"></i></button>
+                        </div>
                         <h5 class="text-sm font-semibold">${t.text}</h5>
-                        <div class="flex justify-between items-center mt-6 pt-4 border-t border-gray-50">
-                            <span class="text-[9px] font-bold text-gray-400">${t.date || 'No Date'}</span>
-                            <select onchange="updateStatus(${t.id}, this.value)" class="text-[10px] bg-gray-50 p-1 rounded-full">
+                        <div class="flex justify-between items-center mt-6 pt-4 border-t border-[var(--border-color)]">
+                            <span class="text-[9px] font-bold ${isOverdue ? 'overdue' : 'text-[var(--text-dim)]'}">${t.date || 'No Date'}</span>
+                            <select onchange="updateStatus(${t.id}, this.value)" class="text-[10px] p-1 rounded-full border-none">
                                 <option ${t.status === 'To-Do' ? 'selected' : ''}>To-Do</option>
                                 <option ${t.status === 'In Progress' ? 'selected' : ''}>In Progress</option>
                                 <option ${t.status === 'Review' ? 'selected' : ''}>Review</option>
@@ -376,7 +453,7 @@
             dCont.innerHTML = state.docs.map(d => `<div class="task-card flex flex-col items-center p-6 relative group">
                 <i class="fas fa-file-pdf text-xl mb-2"></i><h4 class="font-bold text-xs">${d.name}</h4>
                 <a href="${d.url}" target="_blank" class="text-[9px] uppercase font-bold text-blue-500 mt-2">Open Link</a>
-                <button onclick="deleteItem('docs', ${d.id})" class="absolute top-4 right-4 opacity-0 group-hover:opacity-100"><i class="fas fa-times text-gray-200"></i></button>
+                <button onclick="deleteItem('docs', ${d.id})" class="absolute top-4 right-4 opacity-0 group-hover:opacity-100"><i class="fas fa-times text-[var(--text-dim)]"></i></button>
             </div>`).join('');
 
             // Sticky Notes
@@ -392,7 +469,7 @@
             
             // Roles
             const rCont = document.getElementById('roles-container');
-            rCont.innerHTML = state.roles.length ? '' : '<p class="col-span-full text-center text-gray-300 py-10">No team profiles added yet.</p>';
+            rCont.innerHTML = state.roles.length ? '' : '<p class="col-span-full text-center text-[var(--text-dim)] py-10">No team profiles added yet.</p>';
             state.roles.forEach(r => {
                 rCont.innerHTML += `
                     <div class="task-card relative group flex flex-col items-center text-center">
@@ -400,17 +477,17 @@
                             ${r.name.charAt(0)}
                         </div>
                         <h4 class="font-bold text-lg">${r.name}</h4>
-                        <p class="text-xs text-gray-400 font-medium mb-4">${r.title}</p>
+                        <p class="text-xs text-[var(--text-dim)] font-medium mb-4">${r.title}</p>
                         <div class="flex flex-wrap justify-center gap-1 mb-6">
-                            ${r.skills.split(',').map(s => `<span class="text-[9px] px-2 py-1 bg-gray-50 rounded-full border border-gray-100">${s.trim()}</span>`).join('')}
+                            ${r.skills.split(',').map(s => `<span class="text-[9px] px-2 py-1 bg-[var(--bg-hover)] rounded-full border border-[var(--border-color)]">${s.trim()}</span>`).join('')}
                         </div>
                         <span class="text-[10px] font-bold uppercase tracking-widest px-4 py-1 rounded-full batch-${r.batch}">${r.batch} Rank</span>
-                        ${r.author === state.currentUser ? `<button onclick="deleteItem('roles', ${r.id})" class="absolute top-6 right-6 opacity-0 group-hover:opacity-100 text-gray-200 hover:text-red-500"><i class="fas fa-trash"></i></button>` : ''}
+                        ${r.author === state.currentUser ? `<button onclick="deleteItem('roles', ${r.id})" class="absolute top-6 right-6 opacity-0 group-hover:opacity-100 text-[var(--text-dim)] hover:text-red-500"><i class="fas fa-trash"></i></button>` : ''}
                     </div>`;
             });
 
             // Logs
-            document.getElementById('log-table-body').innerHTML = state.logs.slice(0,10).map(l => `<tr><td class="p-6 text-gray-300 font-mono text-[10px]">${new Date(l.time).toLocaleTimeString()}</td><td class="p-6 font-bold text-xs">@${l.user}</td><td class="p-6 text-gray-500 text-xs font-light">${l.action}</td></tr>`).join('');
+            document.getElementById('log-table-body').innerHTML = state.logs.slice(0,12).map(l => `<tr><td class="p-6 text-[var(--text-dim)] font-mono text-[10px]">${new Date(l.time).toLocaleTimeString()}</td><td class="p-6 font-bold text-xs">@${l.user}</td><td class="p-6 text-[var(--text-dim)] text-xs font-light">${l.action}</td></tr>`).join('');
         }
 
         function openModal() {
@@ -429,8 +506,8 @@
             } else {
                 document.getElementById('modal-title').innerHTML = `
                     <div class="flex gap-4 mb-4 text-sm">
-                        <button onclick="toggleModalFields('note')" id="btn-m-note" class="font-bold text-black border-b-2 border-black">Sticky Note</button>
-                        <button onclick="toggleModalFields('doc')" id="btn-m-doc" class="font-bold text-gray-300">File Link</button>
+                        <button onclick="toggleModalFields('note')" id="btn-m-note" class="font-bold border-b-2 border-current">Sticky Note</button>
+                        <button onclick="toggleModalFields('doc')" id="btn-m-doc" class="font-bold text-[var(--text-dim)]">File Link</button>
                     </div>`;
                 document.getElementById('note-fields').classList.remove('hidden');
             }
@@ -441,8 +518,8 @@
             const isNote = type === 'note';
             document.getElementById('note-fields').classList.toggle('hidden', !isNote);
             document.getElementById('doc-fields').classList.toggle('hidden', isNote);
-            document.getElementById('btn-m-note').className = isNote ? 'font-bold text-black border-b-2 border-black' : 'font-bold text-gray-300';
-            document.getElementById('btn-m-doc').className = !isNote ? 'font-bold text-black border-b-2 border-black' : 'font-bold text-gray-300';
+            document.getElementById('btn-m-note').className = isNote ? 'font-bold border-b-2 border-current' : 'font-bold text-[var(--text-dim)]';
+            document.getElementById('btn-m-doc').className = !isNote ? 'font-bold border-b-2 border-current' : 'font-bold text-[var(--text-dim)]';
         }
 
         function closeModal() { document.getElementById('modal').classList.add('hidden'); }
@@ -505,8 +582,12 @@
         function logout() { localStorage.clear(); location.reload(); }
 
         window.onload = () => {
-            const token = localStorage.getItem('pg_pms_key_v4');
+            const token = localStorage.getItem('pg_pms_key_v5');
             const user = localStorage.getItem('pg_pms_user');
+            const theme = localStorage.getItem('pg_pms_theme') || 'light';
+            
+            setTheme(theme);
+
             if(token && user) {
                 document.getElementById('user-nickname').value = user;
                 document.getElementById('passcode').value = token;
