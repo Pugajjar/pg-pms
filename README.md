@@ -1,17 +1,5 @@
-🚀 PG-PMS: The Professional Serverless Workspace
 
-<p align="center">
-<img src="logo.png" alt="PG-PMS Logo" width="120px">
-</p>
-
-<p align="center">
-<img src="https://www.google.com/search?q=https://img.shields.io/badge/Maintained%253F-yes-green.svg" alt="Maintained">
-<img src="https://www.google.com/search?q=https://img.shields.io/badge/Architecture-Serverless-blue.svg" alt="Serverless">
-<img src="https://www.google.com/search?q=https://img.shields.io/badge/UI-Professional%2520White%2520%2526%2520Dark-black.svg" alt="UI Theme">
-<img src="https://www.google.com/search?q=https://img.shields.io/badge/Built%2520For-SIH%2520%2526%2520Developers-orange.svg" alt="Purpose">
-</p>
-
-🌑 "Ditch the WhatsApp Chaos."
+"Ditch the WhatsApp Chaos"
 
 PG-PMS (Project Management System) is a high-end, developer-centric workspace built to solve the fragmentation of team collaboration during high-stakes projects like the Smart India Hackathon (SIH).
 
