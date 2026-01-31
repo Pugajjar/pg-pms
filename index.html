@@ -16,6 +16,7 @@
             --text-main: #333333;
             --text-dim: #6b7280;
             --card-bg: #ffffff;
+            --logo-filter: none;
         }
 
         [data-theme='dark'] {
@@ -26,6 +27,7 @@
             --text-main: #ffffff;
             --text-dim: #a1a1aa;
             --card-bg: #1f1f1f;
+            --logo-filter: invert(1) brightness(2); /* This turns black logo to white */
         }
 
         body { 
@@ -34,6 +36,12 @@
             background-color: var(--bg-primary); 
             -webkit-font-smoothing: antialiased;
             transition: background-color 0.3s, color 0.3s;
+        }
+
+        /* Logo Mechanism */
+        .logo-img {
+            filter: var(--logo-filter);
+            transition: filter 0.3s ease;
         }
 
         /* Capsule Button Styling */
@@ -83,7 +91,7 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            color: #333333; /* Notes stay readable */
+            color: #333333;
         }
         [data-theme='dark'] .sticky-note { opacity: 0.9; }
 
@@ -143,7 +151,7 @@
     <div id="login-screen" class="fixed inset-0 z-[100] bg-[var(--bg-primary)] flex items-center justify-center p-6">
         <div class="max-w-sm w-full text-center">
             <div class="mb-10">
-                <img src="logo.png" alt="PG-PMS Logo" class="h-16 mx-auto object-contain" onerror="this.src='https://ui-avatars.com/api/?name=PG+PMS&background=000&color=fff&size=128'">
+                <img src="logo.png" alt="PG-PMS Logo" class="logo-img h-16 mx-auto object-contain" onerror="this.src='https://ui-avatars.com/api/?name=PG+PMS&background=000&color=fff&size=128'">
             </div>
             <h1 class="text-2xl font-bold mb-2 tracking-tight">Project Management</h1>
             <p class="text-[var(--text-dim)] mb-8 text-sm font-light">Access your workspace with your passcode.</p>
@@ -161,7 +169,7 @@
         <!-- SIDE NAVIGATION -->
         <aside class="w-full md:w-72 border-r p-8 flex flex-col gap-10">
             <div class="flex items-center gap-4">
-                <img src="logo.png" alt="Logo" class="h-10 w-10 object-contain" onerror="this.src='https://ui-avatars.com/api/?name=PG&background=000&color=fff'">
+                <img src="logo.png" alt="Logo" class="logo-img h-10 w-10 object-contain" onerror="this.src='https://ui-avatars.com/api/?name=PG&background=000&color=fff'">
                 <div class="flex flex-col">
                     <span class="font-bold text-lg leading-none tracking-tight">PG-PMS</span>
                     <span class="text-[10px] text-[var(--text-dim)] font-medium uppercase tracking-tighter" id="display-name-label">Team Member</span>
@@ -253,15 +261,6 @@
                             </div>
                         </div>
                     </div>
-                    
-                    <div class="pt-10 border-t border-[var(--border-color)]">
-                        <h4 class="text-sm font-bold uppercase tracking-widest text-[var(--text-dim)]">System Information</h4>
-                        <div class="mt-4 p-6 bg-[var(--bg-hover)] rounded-2xl">
-                            <p class="text-xs font-mono text-[var(--text-dim)]">Version: 2.1.0-Production</p>
-                            <p class="text-xs font-mono text-[var(--text-dim)] mt-2">Environment: GitHub Serverless</p>
-                            <p class="text-xs font-mono text-[var(--text-dim)] mt-2">Active User: <span id="settings-user-name"></span></p>
-                        </div>
-                    </div>
                 </div>
             </div>
 
@@ -311,8 +310,7 @@
     </div>
 
     <script>
-        // CONFIG - REPLACE OWNER
-        const REPO_OWNER = "Pugajjar"; 
+        const REPO_OWNER = "YOUR_GITHUB_USERNAME"; 
         const REPO_NAME = "pg-pms";
         const FILE_PATH = "tasks.json";
 
@@ -330,7 +328,6 @@
                 document.getElementById('login-screen').classList.add('hidden');
                 document.getElementById('main-dashboard').classList.remove('hidden');
                 document.getElementById('display-name-label').innerText = name;
-                document.getElementById('settings-user-name').innerText = name;
                 localStorage.setItem('pg_pms_key_v5', token);
                 localStorage.setItem('pg_pms_user', name);
             }
@@ -414,10 +411,7 @@
             }
         }
 
-        function setNoteColor(color) { state.activeNoteColor = color; }
-
         function render() {
-            // Task Rendering
             const cols = { 'To-Do': 'col-todo', 'In Progress': 'col-progress', 'Review': 'col-review', 'Done': 'col-done' };
             Object.values(cols).forEach(id => document.getElementById(id).innerHTML = '');
             let completed = 0;
@@ -428,12 +422,12 @@
                     <div class="task-card group">
                         <div class="flex justify-between items-start mb-4">
                             <span class="text-[10px] font-bold text-[var(--text-dim)] uppercase tracking-widest">@${t.owner}</span>
-                            <button onclick="deleteItem('tasks', ${t.id})" class="opacity-0 group-hover:opacity-100 text-[var(--text-dim)] hover:text-red-500"><i class="fas fa-trash text-[10px]"></i></button>
+                            <button onclick="deleteItem('tasks', ${t.id})" class="opacity-0 group-hover:opacity-100 text-[var(--text-dim)] hover:text-red-500 transition-all"><i class="fas fa-trash text-[10px]"></i></button>
                         </div>
                         <h5 class="text-sm font-semibold">${t.text}</h5>
                         <div class="flex justify-between items-center mt-6 pt-4 border-t border-[var(--border-color)]">
                             <span class="text-[9px] font-bold ${isOverdue ? 'overdue' : 'text-[var(--text-dim)]'}">${t.date || 'No Date'}</span>
-                            <select onchange="updateStatus(${t.id}, this.value)" class="text-[10px] p-1 rounded-full border-none">
+                            <select onchange="updateStatus(${t.id}, this.value)" class="text-[10px] p-1 rounded-full border-none bg-[var(--bg-hover)]">
                                 <option ${t.status === 'To-Do' ? 'selected' : ''}>To-Do</option>
                                 <option ${t.status === 'In Progress' ? 'selected' : ''}>In Progress</option>
                                 <option ${t.status === 'Review' ? 'selected' : ''}>Review</option>
@@ -443,12 +437,10 @@
                     </div>`;
             });
 
-            // Progress Bar
             const percent = state.tasks.length ? Math.round((completed / state.tasks.length) * 100) : 0;
             document.getElementById('global-progress-bar').style.width = percent + '%';
             document.getElementById('global-percent').innerText = percent;
 
-            // Docs
             const dCont = document.getElementById('doc-container');
             dCont.innerHTML = state.docs.map(d => `<div class="task-card flex flex-col items-center p-6 relative group">
                 <i class="fas fa-file-pdf text-xl mb-2"></i><h4 class="font-bold text-xs">${d.name}</h4>
@@ -456,7 +448,6 @@
                 <button onclick="deleteItem('docs', ${d.id})" class="absolute top-4 right-4 opacity-0 group-hover:opacity-100"><i class="fas fa-times text-[var(--text-dim)]"></i></button>
             </div>`).join('');
 
-            // Sticky Notes
             const nCont = document.getElementById('notes-container');
             nCont.innerHTML = state.notes.map(n => `
                 <div class="sticky-note note-${n.color}">
@@ -467,7 +458,6 @@
                     </div>
                 </div>`).join('');
             
-            // Roles
             const rCont = document.getElementById('roles-container');
             rCont.innerHTML = state.roles.length ? '' : '<p class="col-span-full text-center text-[var(--text-dim)] py-10">No team profiles added yet.</p>';
             state.roles.forEach(r => {
@@ -486,7 +476,6 @@
                     </div>`;
             });
 
-            // Logs
             document.getElementById('log-table-body').innerHTML = state.logs.slice(0,12).map(l => `<tr><td class="p-6 text-[var(--text-dim)] font-mono text-[10px]">${new Date(l.time).toLocaleTimeString()}</td><td class="p-6 font-bold text-xs">@${l.user}</td><td class="p-6 text-[var(--text-dim)] text-xs font-light">${l.action}</td></tr>`).join('');
         }
 
@@ -585,9 +574,7 @@
             const token = localStorage.getItem('pg_pms_key_v5');
             const user = localStorage.getItem('pg_pms_user');
             const theme = localStorage.getItem('pg_pms_theme') || 'light';
-            
             setTheme(theme);
-
             if(token && user) {
                 document.getElementById('user-nickname').value = user;
                 document.getElementById('passcode').value = token;
